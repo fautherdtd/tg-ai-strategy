@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Facades;
+namespace App\Services;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Facade;
 
-class MessagesBot
+class Sendler
 {
     public Client $client;
 

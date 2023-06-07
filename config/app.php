@@ -168,7 +168,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \App\Providers\MessageBotServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -183,7 +182,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'MessageBot' => \App\Facades\MessageBotFacade::class
+        'Sendler' => \App\Facades\Sendler::class
     ])->toArray(),
 
 ];

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Facades\MessagesBot;
+use App\Services\Sendler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,10 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        App::bind('messageBot', function()
-        {
-            return new MessagesBot;
-        });
     }
 
     /**
@@ -24,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->bind('sendler', 'App\Services\Sendler');
     }
 }
