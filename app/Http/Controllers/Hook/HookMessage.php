@@ -17,7 +17,7 @@ class HookMessage extends BotController
     public function make(Request $request)
     {
         return $request->has('message') ?
-            $this->handler($request) : $this->callback($request);
+            $this->handler($request) : $this->callbackHandler($request);
     }
 
     /**
@@ -27,7 +27,6 @@ class HookMessage extends BotController
     public function handler(Request $request)
     {
         if ($request->has('message')) {
-            Sendler::send($request->input('message.from.id'), '123');
             if ($request->input('message.text') === '/start') {
                 $this->savedMessage($request);
                 return (new StepBotController())->start(
@@ -44,17 +43,9 @@ class HookMessage extends BotController
         return Sendler::send($request->input('message.from.id'), 'Работает');
     }
 
-    public function callback(Request $request)
+    public function callbackHandler(Request $request)
     {
 
-        $model = Messages::create([
-            'message_id' => $request->input('callback_query.message.message_id'),
-            'from' => $request->input('callback_query.message.from'),
-            'chat' => $request->input('callback_query.message.chat'),
-            'text' => $request->input('callback_query.message.text'),
-            'type' => 'callback',
-            'user_id' => $request->input('callback_query.message.from.id')
-        ]);
         return Sendler::send(
             $request->input('callback_query.message.from.id'),
             'Кнопка'
