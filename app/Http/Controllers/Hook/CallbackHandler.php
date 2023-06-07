@@ -12,7 +12,7 @@ class CallbackHandler extends Controller
     {
         if ($request->has('callback_query.reply_markup.inline_keyboard')) {
             foreach ($request->input('callback_query.reply_markup.inline_keyboard')[0] as $markup) {
-                if ($markup['callback_data'] === 'getSkills') {
+                if ($markup['callback_data'] === 'get_skills') {
                     return $this->getSkills($request->input('callback_query.from.id'));
                 }
             }
