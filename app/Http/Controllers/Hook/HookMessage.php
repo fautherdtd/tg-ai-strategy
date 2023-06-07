@@ -17,7 +17,7 @@ class HookMessage extends BotController
     public function make(Request $request)
     {
         return $request->has('message') ?
-            $this->message($request) : $this->callback($request);
+            $this->handler($request) : $this->callback($request);
     }
 
     /**
