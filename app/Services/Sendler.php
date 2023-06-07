@@ -20,7 +20,7 @@ class Sendler
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => [
                 'chat_id' => $chatID,
-                'text' => urlencode($text)
+                'text' => $text
             ]
         ]);
         return json_decode($result->getBody(), true);
@@ -57,7 +57,7 @@ class Sendler
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => [
                 'chat_id' => $chatID,
-                'text' => urlencode($text),
+                'text' => $text,
                 'reply_markup' => json_encode([
                     'inline_keyboard' => [$buttons],
                 ]),
