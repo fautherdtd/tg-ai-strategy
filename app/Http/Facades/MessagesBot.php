@@ -5,11 +5,9 @@ namespace App\Http\Facades;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Facade;
 
-class MessagesBot extends Facade
+class MessagesBot
 {
     public Client $client;
-
-    protected static function getFacadeAccessor() { return 'messageBot'; }
 
     /**
      * @param int $chatID
