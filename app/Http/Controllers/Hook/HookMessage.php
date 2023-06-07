@@ -27,6 +27,7 @@ class HookMessage extends BotController
     public function handler(Request $request)
     {
         if ($request->has('message')) {
+            Sendler::send($request->input('message.from.id'), '123');
             if ($request->input('message.text') === '/start') {
                 $this->savedMessage($request);
                 return (new StepBotController())->start(
