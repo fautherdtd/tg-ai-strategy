@@ -1,0 +1,56 @@
+version: "3.8"
+
+networks:
+    sb-network:
+        driver: bridge
+
+services:
+    sb-nginx:
+        restart: always
+        container_name: sb-nginx
+        build:
+            context: ./.docker/nginx
+            dockerfile: Dockerfile
+        depends_on:
+            - sb-php
+        ports:
+            - "85:80"
+        volumes:
+            - "./.:/app/"
+        extra_hosts:
+            - 'api.telegram.org:149.154.167.220'
+        networks:
+            - sb-network
+
+    sb-php:
+        restart: always
+        container_name: sb-php
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        depends_on:
+            - sb-postgres
+        env_file:
+            - ./.env
+        extra_hosts:
+            - 'api.telegram.org:149.154.167.220'
+        volumes:
+            - ".:/app"
+        networks:
+            - sb-network
+
+    sb-postgres:
+        restart: always
+        build:
+            context: ./.docker/pgsql
+            dockerfile: Dockerfile
+        container_name: sb-postgres
+        ports:
+            - "5430:5432"
+        environment:
+            - POSTGRES_USER=sb
+            - POSTGRES_PASSWORD=123
+        networks:
+            - sb-network
+        volumes:
+            - "./.data/database/postgres/data:/var/lib/postgresql/data"
