@@ -12,7 +12,6 @@ class HookMessage extends BotController
 {
     public function make(Request $request)
     {
-        Log::info('{test}', ['test' => $request->all()]);
         return $request->has('message') ?
             $this->message($request) : $this->callback($request);
     }
