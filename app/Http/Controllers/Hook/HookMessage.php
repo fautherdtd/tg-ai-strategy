@@ -17,7 +17,7 @@ class HookMessage extends BotController
     public function make(Request $request)
     {
         return $request->has('message') ?
-            $this->handler($request) : $this->callbackHandler($request);
+            $this->handler($request) : (new CallbackHandler())->make($request);
     }
 
     /**
@@ -41,15 +41,6 @@ class HookMessage extends BotController
     public function message(Request $request)
     {
         return Sendler::send($request->input('message.from.id'), 'Работает');
-    }
-
-    public function callbackHandler(Request $request)
-    {
-
-        return Sendler::send(
-            $request->input('callback_query.message.from.id'),
-            'Кнопка'
-        );
     }
 
     /**
