@@ -31,6 +31,18 @@ class HookMessage extends BotController
 
     public function callback(Request $request)
     {
-        return true;
+
+        $model = Messages::create([
+            'message_id' => $request->input('callback_query.message.message_id'),
+            'from' => $request->input('callback_query.message.from'),
+            'chat' => $request->input('callback_query.message.chat'),
+            'text' => $request->input('callback_query.message.text'),
+            'type' => 'callback',
+            'user_id' => $request->input('callback_query.message.from.id')
+        ]);
+        return (new MessagesController())->send(
+            $request->input('callback_query.message.from.id'),
+            'Кнопка'
+        );
     }
 }
