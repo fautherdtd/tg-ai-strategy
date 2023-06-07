@@ -11,11 +11,13 @@ class Sendler
     /**
      * @param int $chatID
      * @param string $text
+     * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function send(int $chatID, string $text)
+    public static function send(int $chatID, string $text)
     {
-        $result = $this->client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
+        $client = new Client();
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => [
                 'chat_id' => $chatID,
                 'text' => urlencode($text)
@@ -27,11 +29,13 @@ class Sendler
     /**
      * @param int $chatID
      * @param int $messageID
+     * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete(int $chatID, int $messageID)
+    public static function delete(int $chatID, int $messageID)
     {
-        $result = $this->client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/deleteMessage',[
+        $client = new Client();
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/deleteMessage',[
             'query' => [
                 'chat_id' => $chatID,
                 'message_id' => $messageID
@@ -43,11 +47,14 @@ class Sendler
     /**
      * @param int $chatID
      * @param string $text
+     * @param array $buttons
+     * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendWithMarkup(int $chatID, string $text, array $buttons)
+    public static function sendWithMarkup(int $chatID, string $text, array $buttons)
     {
-        $result = $this->client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
+        $client = new Client();
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => [
                 'chat_id' => $chatID,
                 'text' => urlencode($text),
