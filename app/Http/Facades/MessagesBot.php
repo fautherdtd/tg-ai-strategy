@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Action;
+namespace App\Http\Facades;
 
-use App\Http\Controllers\BotController;
-use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Facade;
 
-class MessagesController extends BotController
+class MessagesBot extends Facade
 {
+    public Client $client;
+
+    protected static function getFacadeAccessor() { return 'messageBot'; }
+
     /**
      * @param int $chatID
      * @param string $text
@@ -36,7 +40,7 @@ class MessagesController extends BotController
                 'message_id' => $messageID
             ]
         ]);
-        dd(json_decode($result->getBody(), true));
+        return json_decode($result->getBody(), true);
     }
 
     /**
@@ -55,6 +59,6 @@ class MessagesController extends BotController
                 ]),
             ]
         ]);
-        dd(json_decode($result->getBody(), true));
+        return json_decode($result->getBody(), true);
     }
 }
