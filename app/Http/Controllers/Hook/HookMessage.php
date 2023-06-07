@@ -12,6 +12,7 @@ class HookMessage extends BotController
 {
     public function make(Request $request)
     {
+        dd(123);
         return $request->has('message') ?
             $this->message($request) : $this->callback($request);
     }
