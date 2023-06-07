@@ -6,11 +6,13 @@ use App\Http\Controllers\Action\MessagesController;
 use App\Http\Controllers\BotController;
 use App\Models\Messages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class HookMessage extends BotController
 {
     public function make(Request $request)
     {
+        Log::info('{test}', ['test' => $request->all()]);
         return $request->has('message') ?
             $this->message($request) : $this->callback($request);
     }
