@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Hook\HookMessage;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 
@@ -13,17 +14,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    (new \App\Http\Controllers\Action\MessagesController())->sendWithMarkup(211926346, '123', [
-        [
-            'text' => 'Тест',
-            'callback_data' => 'test_2',
-        ],
-        [
-            'text' => 'Тест 2',
-            'callback_data' => 'test_2',
-
-        ]
-    ]);
-});
