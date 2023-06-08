@@ -54,3 +54,19 @@ services:
             - sb-network
         volumes:
             - "./.data/database/postgres/data:/var/lib/postgresql/data"
+
+    sb-redis:
+        restart: always
+        build:
+            context: ./.docker/redis
+            dockerfile: Dockerfile
+        container_name: sb-redis
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        ports:
+            - "6378:6379"
+        volumes:
+            - ./.data/storage/redis/redis-data:/var/lib/redis
+            - ./.data/storage/redis/redis.conf:/usr/local/etc/redis/redis.conf
+        networks:
+            - sb-network

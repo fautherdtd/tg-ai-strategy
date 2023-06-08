@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Action;
 
 use App\Http\Controllers\Controller;
 use App\Services\Sendler;
+use Illuminate\Support\Facades\Redis;
 
 class InlineKeyboardsController extends Controller
 {
@@ -22,5 +23,17 @@ class InlineKeyboardsController extends Controller
                 'callback_data' => 'get_commands',
             ],
         ]);
+    }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function startGPT(int $chatID)
+    {
+        Redis::get('start_gpt_' . $chatID, true);
+        $text = file_get_contents(resource_path('views/templates/start_gpt.html'));
+        return Sendler::send($chatID, $text);
     }
 }
