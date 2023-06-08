@@ -20,12 +20,20 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
+        return $this->defaultAnswer($message->from_id);
+    }
+
+    public function defaultAnswer(int $fromID)
+    {
+        $text = file_get_contents(resource_path('views/templates/start.html'));
         return Sendler::sendWithMarkup(
-            $message->from_id,
-            file_get_contents(resource_path('views/templates/default.html')),
+            $fromID,
+            $text,
             [
-                'text' => 'Включить режим диалога',
-                'callback_data' => 'start_gpt',
+                [
+                    'text' => 'Включить режим диалога',
+                    'callback_data' => 'start_gpt',
+                ]
             ],
         );
     }
