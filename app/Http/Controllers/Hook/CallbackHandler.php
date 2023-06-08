@@ -2,33 +2,19 @@
 
 namespace App\Http\Controllers\Hook;
 
+use App\DTO\HookCallbackDTO;
+use App\Enums\InlineKeyboards;
+use App\Http\Controllers\Action\InlineKeyboardsController;
 use App\Http\Controllers\Controller;
-use App\Services\Sendler;
-use Illuminate\Http\Request;
 
 class CallbackHandler extends Controller
 {
-    public function make(Request $request)
+    public function handler(HookCallbackDTO $callback)
     {
-        if ($request->has('callback_query.message.reply_markup.inline_keyboard')) {
-            $this->getSkills($request->input('callback_query.from.id'));
-            foreach ($request->input('callback_query.reply_markup.inline_keyboard')[0] as $markup) {
-                if ($markup['callback_data'] === 'get_skills') {
-                    return $this->getSkills($request->input('callback_query.from.id'));
-                }
-            }
+        if (in_array(InlineKeyboards::GetSkills->name, $callback->parseMarkup())) {
+            return (new InlineKeyboardsController())->getSkills($callback->from_id);
         }
     }
 
 
-    public function getSkills(int $chatID)
-    {
-        $text = 'Наш бот умеет много чего';
-        return Sendler::sendWithMarkup($chatID, $text, [
-            [
-                'text' => 'Получить стратегию продвижения',
-                'callback_data' => 'get_strategy',
-            ],
-        ]);
-    }
 }

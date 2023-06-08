@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Hook;
 
+use App\DTO\HookCallbackDTO;
+use App\DTO\HookMessageDTO;
 use App\Http\Controllers\Action\StepBotController;
 use App\Http\Controllers\BotController;
 use App\Models\Messages;
@@ -17,30 +19,12 @@ class HookMessage extends BotController
     public function make(Request $request)
     {
         return $request->has('message') ?
-            $this->handler($request) : (new CallbackHandler())->make($request);
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed|void
-     */
-    public function handler(Request $request)
-    {
-        if ($request->has('message')) {
-            if ($request->input('message.text') === '/start') {
-                $this->savedMessage($request);
-                return (new StepBotController())->start(
-                    $request->input('message.from.id')
-                );
-            }
-            return $this->message($request);
-        }
-    }
-
-
-    public function message(Request $request)
-    {
-        return Sendler::send($request->input('message.from.id'), 'Работает');
+            (new MessageHandler())->handler(
+                new HookMessageDTO($request)
+            ) :
+            (new CallbackHandler())->handler(
+                new HookCallbackDTO($request)
+            );
     }
 
     /**
