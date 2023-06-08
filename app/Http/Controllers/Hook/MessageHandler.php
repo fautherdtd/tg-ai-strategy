@@ -21,7 +21,7 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
-        if (Redis::has('start_gpt_' . $message->from_id)) {
+        if (Redis::exists('start_gpt_' . $message->from_id)) {
             return Sendler::send($message->from_id, file_get_contents(resource_path('views/templates/start_gpt.html')));
         }
         return $this->defaultAnswer($message->from_id);
