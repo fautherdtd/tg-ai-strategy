@@ -10,7 +10,7 @@ class ChatGPT
     {
         $client = OpenAI::client(getenv('OPENAI_TOKEN'));
 
-        $result = $client->completions()->create([
+        $result = $client->chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 ['role' => 'user', 'content' => $text],
