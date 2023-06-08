@@ -25,7 +25,7 @@ class MessageHandler extends Controller
 
     public function defaultAnswer(int $fromID)
     {
-        $text = file_get_contents(resource_path('views/templates/start.html'));
+        $text = file_get_contents(resource_path('views/templates/default.html'));
         return Sendler::sendWithMarkup(
             $fromID,
             $text,
