@@ -13,13 +13,13 @@ class InlineKeyboardsController extends Controller
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getSkills(int $chatID)
+    public function aboutMe(int $chatID)
     {
-        $text = 'Наш бот умеет много чего';
+        $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                'text' => 'Получить стратегию продвижения',
-                'callback_data' => 'get_strategy',
+                'text' => 'Список команд',
+                'callback_data' => 'get_commands',
             ],
         ]);
     }

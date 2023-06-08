@@ -11,8 +11,8 @@ class CallbackHandler extends Controller
 {
     public function handler(HookCallbackDTO $callback)
     {
-        if (in_array(InlineKeyboards::GetSkills->name, $callback->parseMarkup())) {
-            return (new InlineKeyboardsController())->getSkills($callback->from_id);
+        if (in_array(InlineKeyboards::AboutMe->name, $callback->parseMarkup())) {
+            return (new InlineKeyboardsController())->aboutMe($callback->from_id);
         }
     }
 

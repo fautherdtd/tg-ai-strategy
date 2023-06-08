@@ -12,9 +12,13 @@ class StepBotController extends BotController
         $text = file_get_contents(resource_path('views/templates/start.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                'text' => 'Что умеет бот',
-                'callback_data' => 'get_skills',
-            ]
+                'text' => 'Подробнее про меня.',
+                'callback_data' => 'about_me',
+            ],
+            [
+                'text' => 'Мои команды.',
+                'callback_data' => 'get_commands',
+            ],
         ]);
     }
 }
