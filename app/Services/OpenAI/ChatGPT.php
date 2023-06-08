@@ -10,15 +10,13 @@ class ChatGPT
     {
         $client = OpenAI::client(getenv('OPENAI_TOKEN'));
 
-        $response = $client->completions()->create([
+        $result = $client->completions()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 ['role' => 'user', 'content' => $text],
             ],
         ]);
 
-        foreach ($response->choices as $result) {
-            return $result->message->content;
-        }
+        return $result['choices'][0]['message']['content'];
     }
 }
