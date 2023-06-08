@@ -6,6 +6,8 @@ use App\DTO\HookCallbackDTO;
 use App\Enums\InlineKeyboards;
 use App\Http\Controllers\Action\InlineKeyboardsController;
 use App\Http\Controllers\Controller;
+use App\Services\Sendler;
+use Illuminate\Support\Facades\Redis;
 
 class CallbackHandler extends Controller
 {
@@ -16,6 +18,9 @@ class CallbackHandler extends Controller
         }
         if (in_array(InlineKeyboards::StartGPT->value, $callback->parseMarkup())) {
             return (new InlineKeyboardsController())->startGPT($callback->from_id);
+        }
+        if (in_array(InlineKeyboards::StopGPT->value, $callback->parseMarkup())) {
+            return (new InlineKeyboardsController())->stopGPT($callback->from_id);
         }
     }
 }

@@ -36,4 +36,17 @@ class InlineKeyboardsController extends Controller
         $text = file_get_contents(resource_path('views/templates/start_gpt.html'));
         return Sendler::send($chatID, $text);
     }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function stopGPT(int $chatID): mixed
+    {
+        Redis::del('start_gpt_' . $chatID, true);
+        $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
+        return Sendler::send($chatID, $text);
+    }
+
 }
