@@ -19,7 +19,7 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->name) {
             return (new StepBotController())->start($message->from_id);
         }
-        return Sendler::send($message->from_id, 'Бот не понимает.');
+        return Sendler::send($message->from_id, 'Бот не понимает 🙁 <br> Попробуйте использовать доступные команды.');
     }
 
 }
