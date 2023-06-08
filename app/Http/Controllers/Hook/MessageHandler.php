@@ -26,7 +26,8 @@ class MessageHandler extends Controller
         if (Redis::exists('start_gpt_' . $message->from_id)) {
             return Sendler::send(
                 $message->from_id,
-                (new SendlerChatGPT())->send($message->text)
+                (new SendlerChatGPT())->send($message->text),
+                'Markdown'
             );
         }
         // Send to Default answer
