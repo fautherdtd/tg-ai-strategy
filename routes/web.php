@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Redis;
 */
 
 Route::get('/', function () {
+    dd((new \App\Services\OpenAI\ChatGPT())->test());
 });

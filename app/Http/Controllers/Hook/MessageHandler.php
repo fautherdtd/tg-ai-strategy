@@ -21,25 +21,28 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
+        // TODO: send to GPT model
         if (Redis::exists('start_gpt_' . $message->from_id)) {
             return Sendler::send($message->from_id, file_get_contents(resource_path('views/templates/start_gpt.html')));
         }
+        // Send to Default answer
         return $this->defaultAnswer($message->from_id);
     }
 
-    public function defaultAnswer(int $fromID)
+    /**
+     * @param int $fromID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function defaultAnswer(int $fromID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/default.html'));
-        return Sendler::sendWithMarkup(
-            $fromID,
-            $text,
+        return Sendler::sendWithMarkup($fromID, $text, [
             [
-                [
-                    'text' => 'Включить режим диалога',
-                    'callback_data' => 'start_gpt',
-                ]
-            ],
-        );
+                'text' => 'Включить режим диалога',
+                'callback_data' => 'start_gpt',
+            ]
+        ]);
     }
 
 }
