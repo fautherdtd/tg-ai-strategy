@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hook;
 
 use App\DTO\HookMessageDTO;
 use App\Enums\Commands;
+use App\Http\Controllers\Action\SendlerChatGPT;
 use App\Http\Controllers\Action\StepBotController;
 use App\Http\Controllers\Controller;
 use App\Services\Sendler;
@@ -23,7 +24,10 @@ class MessageHandler extends Controller
         }
         // TODO: send to GPT model
         if (Redis::exists('start_gpt_' . $message->from_id)) {
-            return Sendler::send($message->from_id, file_get_contents(resource_path('views/templates/start_gpt.html')));
+            return Sendler::send(
+                $message->from_id,
+                (new SendlerChatGPT())->send($message->text)
+            );
         }
         // Send to Default answer
         return $this->defaultAnswer($message->from_id);

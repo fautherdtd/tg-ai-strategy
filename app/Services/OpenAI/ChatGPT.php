@@ -6,13 +6,13 @@ use OpenAI;
 
 class ChatGPT
 {
-    public function test()
+    public function make(string $text)
     {
         $client = OpenAI::client(getenv('OPENAI_TOKEN'));
 
         $result = $client->completions()->create([
             'model' => 'text-similarity-davinci-001',
-            'prompt' => 'PHP is',
+            'prompt' => $text,
         ]);
 
         return $result['choices'][0]['text'];
