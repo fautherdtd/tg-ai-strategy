@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd(Commands::Start->value);
+    echo file_get_contents(resource_path('views/templates/start.html'));
 });

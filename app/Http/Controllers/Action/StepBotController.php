@@ -9,7 +9,7 @@ class StepBotController extends BotController
 {
     public function start(int $chatID)
     {
-        $text = 'Привет! Это бот AI Strategy.';
+        $text = file_get_contents(resource_path('views/templates/start.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
                 'text' => 'Что умеет бот',
