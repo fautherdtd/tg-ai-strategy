@@ -13,10 +13,11 @@ class MessageHandler extends Controller
     /**
      * @param HookMessageDTO $message
      * @return mixed|void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handler(HookMessageDTO $message)
     {
-        if ($message->text === Commands::Start) {
+        if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
         return Sendler::send($message->from_id, 'Бот не понимает 🙁 <br> Попробуйте использовать доступные команды.');
