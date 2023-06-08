@@ -11,7 +11,7 @@ class ChatGPT
         $client = OpenAI::client(getenv('OPENAI_TOKEN'));
 
         $result = $client->completions()->create([
-            'model' => 'text-davinci-003',
+            'model' => 'text-similarity-davinci-001',
             'prompt' => 'PHP is',
         ]);
 
