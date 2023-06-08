@@ -27,7 +27,7 @@ class MessageHandler extends Controller
             return Sendler::send(
                 $message->from_id,
                 (new SendlerChatGPT())->send($message->text),
-                'Markdown'
+                'text'
             );
         }
         // Send to Default answer

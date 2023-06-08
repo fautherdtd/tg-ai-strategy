@@ -17,12 +17,17 @@ class Sendler
     public static function send(int $chatID, string $text, string $mode = 'html')
     {
         $client = new Client();
-        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
-            'query' => [
-                'chat_id' => $chatID,
-                'text' => $text,
+        $query = [
+            'chat_id' => $chatID,
+            'text' => $text,
+        ];
+        if ($mode === 'html') {
+            array_push($query, [
                 'parse_mode' => $mode
-            ]
+            ]);
+        }
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
+            'query' => $query
         ]);
         return json_decode($result->getBody(), true);
     }
