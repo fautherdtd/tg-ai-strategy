@@ -22,9 +22,9 @@ class Sendler
             'text' => $text,
         ];
         if ($mode === 'html') {
-            array_push($query, [
+            $query[] = [
                 'parse_mode' => $mode
-            ]);
+            ];
         }
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => $query
