@@ -6,6 +6,7 @@ use App\DTO\HookMessageDTO;
 use App\Enums\Commands;
 use App\Http\Controllers\Action\StepBotController;
 use App\Http\Controllers\Controller;
+use App\Services\Sendler;
 
 class MessageHandler extends Controller
 {
@@ -18,6 +19,7 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->name) {
             return (new StepBotController())->start($message->from_id);
         }
+        return Sendler::send($message->from_id, 'Бот не понимает.');
     }
 
 }
