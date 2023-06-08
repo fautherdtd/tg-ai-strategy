@@ -16,7 +16,7 @@ class MessageHandler extends Controller
      */
     public function handler(HookMessageDTO $message)
     {
-        if ($message->text === Commands::Start->name) {
+        if ($message->text === Commands::Start) {
             return (new StepBotController())->start($message->from_id);
         }
         return Sendler::send($message->from_id, 'Бот не понимает 🙁 <br> Попробуйте использовать доступные команды.');
