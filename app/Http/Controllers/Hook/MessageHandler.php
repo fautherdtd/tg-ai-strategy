@@ -7,6 +7,7 @@ use App\Enums\Commands;
 use App\Http\Controllers\Action\StepBotController;
 use App\Http\Controllers\Controller;
 use App\Services\Sendler;
+use Illuminate\Support\Facades\Redis;
 
 class MessageHandler extends Controller
 {
@@ -19,6 +20,9 @@ class MessageHandler extends Controller
     {
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
+        }
+        if (Redis::has('start_gpt_' . $message->from_id)) {
+            return Sendler::send($message->from_id, file_get_contents(resource_path('views/templates/start_gpt.html')));
         }
         return $this->defaultAnswer($message->from_id);
     }

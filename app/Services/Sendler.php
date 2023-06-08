@@ -14,13 +14,14 @@ class Sendler
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function send(int $chatID, string $text)
+    public static function send(int $chatID, string $text, string $mode = 'html')
     {
         $client = new Client();
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
             'query' => [
                 'chat_id' => $chatID,
-                'text' => $text
+                'text' => $text,
+                'parse_mode' => $mode
             ]
         ]);
         return json_decode($result->getBody(), true);
