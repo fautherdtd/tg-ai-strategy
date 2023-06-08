@@ -14,7 +14,7 @@ class InlineKeyboardsController extends Controller
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function aboutMe(int $chatID)
+    public function aboutMe(int $chatID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
@@ -30,9 +30,9 @@ class InlineKeyboardsController extends Controller
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function startGPT(int $chatID)
+    public function startGPT(int $chatID): mixed
     {
-        Redis::get('start_gpt_' . $chatID, true);
+        Redis::set('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/start_gpt.html'));
         return Sendler::send($chatID, $text);
     }

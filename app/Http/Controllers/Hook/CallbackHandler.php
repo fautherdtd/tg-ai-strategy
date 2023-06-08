@@ -18,6 +18,4 @@ class CallbackHandler extends Controller
             return (new InlineKeyboardsController())->startGPT($callback->from_id);
         }
     }
-
-
 }
