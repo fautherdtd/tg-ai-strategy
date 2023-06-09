@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Redis;
 
 class CommandsController
 {
+    protected array $functions = [
+        'start' => 'start',
+        'about_me' => 'aboutMe',
+        'menu' => 'menu',
+        'start_gpt' => 'startGPT',
+        'stop_gpt' => 'stopGPT'
+    ];
     /**
      * @param string $command
      * @param string $chatID
@@ -15,8 +22,8 @@ class CommandsController
      */
     public function handler(string $command, string $chatID)
     {
-        $value = preg_replace('/[^a-zA-Z]/', '', $command);
-        return call_user_func(self::$value($chatID));
+        $function = $this->functions[preg_replace('/[^a-zA-Z]/', '', $command)];
+        return call_user_func(self::$function($chatID));
     }
 
     /**
@@ -79,6 +86,11 @@ class CommandsController
         return Sendler::send($chatID, $text);
     }
 
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     protected static function menu(int $chatID)
     {
         $text = file_get_contents(resource_path('views/templates/menu.html'));
