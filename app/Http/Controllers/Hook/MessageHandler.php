@@ -44,13 +44,13 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
-        if ($message->text === Commands::StartGPT) {
+        if ($message->text === Commands::StartGPT->value) {
             return (new InlineKeyboardsController())->startGPT($message->from_id);
         }
-        if ($message->text === Commands::StopGPT) {
+        if ($message->text === Commands::StopGPT->value) {
             return (new InlineKeyboardsController())->stopGPT($message->from_id);
         }
-        if ($message->text === Commands::AboutMe) {
+        if ($message->text === Commands::AboutMe->value) {
             return (new InlineKeyboardsController())->aboutMe($message->from_id);
         }
     }
