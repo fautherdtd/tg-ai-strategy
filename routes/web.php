@@ -1,10 +1,7 @@
 <?php
 
 use App\Enums\Commands;
-use App\Http\Controllers\Hook\HookMessage;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redis;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +15,5 @@ use Illuminate\Support\Facades\Redis;
 */
 
 Route::get('/', function () {
-
+    dd(Commands::values());
 });

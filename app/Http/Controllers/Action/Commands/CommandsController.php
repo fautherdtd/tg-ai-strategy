@@ -1,20 +1,49 @@
 <?php
 
-namespace App\Http\Controllers\Action;
+namespace App\Http\Controllers\Action\Commands;
 
-use App\Http\Controllers\Controller;
+use App\Enums\Commands;
 use App\Services\Sendler;
 use Illuminate\Support\Facades\Redis;
 
-class InlineKeyboardsController extends Controller
+class CommandsController
 {
+    /**
+     * @param string $command
+     * @param string $chatID
+     * @return false|mixed|void
+     */
+    public function handler(string $command, string $chatID)
+    {
+        return call_user_func(self::$command);
+    }
+
+    /**
+     * @param $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected static function start($chatID)
+    {
+        $text = file_get_contents(resource_path('views/templates/start.html'));
+        return Sendler::sendWithMarkup($chatID, $text, [
+            [
+                'text' => 'Подробнее про меня',
+                'callback_data' => 'about_me',
+            ],
+            [
+                'text' => 'Мои команды',
+                'callback_data' => 'get_commands',
+            ],
+        ]);
+    }
 
     /**
      * @param int $chatID
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function aboutMe(int $chatID): mixed
+    protected static function aboutMe(int $chatID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
@@ -30,7 +59,7 @@ class InlineKeyboardsController extends Controller
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function startGPT(int $chatID): mixed
+    protected static function startGPT(int $chatID): mixed
     {
         Redis::set('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/start_gpt.html'));
@@ -42,11 +71,10 @@ class InlineKeyboardsController extends Controller
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function stopGPT(int $chatID): mixed
+    protected static function stopGPT(int $chatID): mixed
     {
         Redis::del('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
         return Sendler::send($chatID, $text);
     }
-
 }
