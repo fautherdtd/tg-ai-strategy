@@ -19,8 +19,5 @@ class CallbackHandler extends Controller
         if (in_array(InlineKeyboards::StartGPT->value, $callback->parseMarkup())) {
             return (new InlineKeyboardsController())->startGPT($callback->from_id);
         }
-        if (in_array(InlineKeyboards::StopGPT->value, $callback->parseMarkup())) {
-            return (new InlineKeyboardsController())->stopGPT($callback->from_id);
-        }
     }
 }

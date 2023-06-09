@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Hook;
 
 use App\DTO\HookMessageDTO;
 use App\Enums\Commands;
+use App\Enums\InlineKeyboards;
+use App\Http\Controllers\Action\InlineKeyboardsController;
 use App\Http\Controllers\Action\SendlerChatGPT;
 use App\Http\Controllers\Action\StepBotController;
 use App\Http\Controllers\Controller;
@@ -22,14 +24,17 @@ class MessageHandler extends Controller
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
-        // TODO: send to GPT model
-        if (Redis::exists('start_gpt_' . $message->from_id)) {
-            return Sendler::send(
-                $message->from_id,
-                (new SendlerChatGPT())->send($message->text),
-                'text'
-            );
+        if (in_array(InlineKeyboards::StopGPT->value, $callback->parseMarkup())) {
+            return (new InlineKeyboardsController())->stopGPT($callback->from_id);
         }
+        // TODO: send to GPT model
+//        if (Redis::exists('start_gpt_' . $message->from_id)) {
+//            return Sendler::send(
+//                $message->from_id,
+//                (new SendlerChatGPT())->send($message->text),
+//                'text'
+//            );
+//        }
         // Send to Default answer
         return $this->defaultAnswer($message->from_id);
     }
