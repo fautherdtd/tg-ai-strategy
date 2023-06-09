@@ -104,13 +104,11 @@ class CommandsController
                     'text' => '💬 Включить режим диалога',
                     'callback_data' => 'start_gpt'
                 ],
-            ],
-            [
                 [
                     'text' => '🗨️ Отключить режим диалога',
                     'callback_data' => 'start_gpt'
                 ]
-            ]
+            ],
         ]);
     }
 }
