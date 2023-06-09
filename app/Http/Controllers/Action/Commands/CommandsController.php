@@ -23,7 +23,7 @@ class CommandsController
     public function handler(string $command, string $chatID)
     {
         $function = $this->functions[preg_replace('/[^a-zA-Z]/', '', $command)];
-        return call_user_func(self::$function($chatID));
+        return call_user_func('self::' . $function, $chatID);
     }
 
     /**
