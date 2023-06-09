@@ -36,11 +36,11 @@ class CommandsController
         $text = file_get_contents(resource_path('views/templates/start.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                'text' => 'Подробнее про меня',
-                'callback_data' => 'about_me',
+                'text' => '🤖 Подробнее про меня',
+                'callback_data' => 'about_me'
             ],
             [
-                'text' => 'Мои команды',
+                'text' => '⌨️ Мои команды',
                 'callback_data' => 'menu',
             ],
         ]);
@@ -56,7 +56,7 @@ class CommandsController
         $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                'text' => 'Меню',
+                'text' => '⌨️ Мои команды',
                 'callback_data' => 'menu',
             ],
         ]);
@@ -97,20 +97,20 @@ class CommandsController
         return Sendler::sendWithMarkup($chatID, $text, [
             [
                 [
-                    'text' => 'Подробнее про меня',
-                    'callback_data' => 'menu',
+                    'text' => '🤖 Подробнее про меня',
+                    'callback_data' => 'about_me'
                 ]
             ],
             [
                 [
-                    'text' => 'Запустить режим диалога',
-                    'callback_data' => 'start_gpt',
+                    'text' => '💬 Включить режим диалога',
+                    'callback_data' => 'start_gpt'
                 ]
             ],
             [
                 [
-                    'text' => 'Отключить режим диалога',
-                    'callback_data' => 'stop_gpt',
+                    'text' => '🗨️ Отключить режим диалога',
+                    'callback_data' => 'start_gpt'
                 ]
             ],
         ]);
