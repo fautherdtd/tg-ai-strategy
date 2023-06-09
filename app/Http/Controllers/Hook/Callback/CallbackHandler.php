@@ -15,10 +15,10 @@ class CallbackHandler extends Controller
      */
     public function handler(HookCallbackDTO $callback)
     {
+        // Если пользователь запустил команду
         foreach ($callback->parseMarkup() as $markup) {
-            // Если пользователь запустил команду
-            if (in_array($markup, Commands::values())) {
-                return (new CommandsController())->handler($markup, $callback->from_id);
+            if (in_array('/' . $markup, Commands::values())) {
+                return (new CommandsController())->handler('/' . $markup, $callback->from_id);
             }
         }
     }
