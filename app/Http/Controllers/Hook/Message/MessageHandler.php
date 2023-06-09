@@ -33,7 +33,7 @@ class MessageHandler
         }
 
         // Отправляем дефолтное сообщение
-        return $this->defaultAnswer($message->from_id);
+//        return $this->defaultAnswer($message->from_id);
     }
 
     /**
