@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd(Commands::values());
+    (new \App\Http\Controllers\Action\Commands\CommandsController())->handler('/start', '1');
 });

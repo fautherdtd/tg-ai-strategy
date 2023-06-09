@@ -15,7 +15,8 @@ class CommandsController
      */
     public function handler(string $command, string $chatID)
     {
-        return call_user_func(self::$command);
+        $value = preg_replace('/[^a-zA-Z]/', '', $command);
+        return call_user_func(self::$value($chatID));
     }
 
     /**
