@@ -19,7 +19,7 @@ class MessageHandler
     public function handler(HookMessageDTO $message)
     {
         // Если пользователь запустил команду
-        if (in_array($message->text, Commands::cases())) {
+        if (in_array($message->text, Commands::values())) {
             return (new CommandsController())->handler($message->text, $message->from_id);
         }
 
