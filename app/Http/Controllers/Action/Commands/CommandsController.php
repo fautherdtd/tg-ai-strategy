@@ -49,8 +49,8 @@ class CommandsController
         $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                'text' => 'Список команд',
-                'callback_data' => 'get_commands',
+                'text' => 'Меню',
+                'callback_data' => 'menu',
             ],
         ]);
     }
@@ -77,5 +77,30 @@ class CommandsController
         Redis::del('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
         return Sendler::send($chatID, $text);
+    }
+
+    protected static function menu(int $chatID)
+    {
+        $text = file_get_contents(resource_path('views/templates/menu.html'));
+        return Sendler::sendWithMarkup($chatID, $text, [
+            [
+                [
+                    'text' => 'Подробнее про меня',
+                    'callback_data' => 'menu',
+                ]
+            ],
+            [
+                [
+                    'text' => 'Запустить режим диалога',
+                    'callback_data' => 'start_gpt',
+                ]
+            ],
+            [
+                [
+                    'text' => 'Отключить режим диалога',
+                    'callback_data' => 'stop_gpt',
+                ]
+            ],
+        ]);
     }
 }
