@@ -17,8 +17,8 @@ class CallbackHandler extends Controller
     {
         foreach ($callback->parseMarkup() as $markup) {
             // Если пользователь запустил команду
-            if (in_array($callback->parseMarkup(), Commands::cases())) {
-                return (new CommandsController())->handler($callback->text, $callback->from_id);
+            if (in_array($markup, Commands::values())) {
+                return (new CommandsController())->handler($markup, $callback->from_id);
             }
         }
     }
