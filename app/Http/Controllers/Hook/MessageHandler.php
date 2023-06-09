@@ -21,22 +21,38 @@ class MessageHandler extends Controller
      */
     public function handler(HookMessageDTO $message)
     {
+        // Проверяем на наличие команд
+        $this->handlerCommands($message);
+
+        // Проверяем был ли запущен диалог
+        if (Redis::exists('start_gpt_' . $message->from_id)) {
+            return Sendler::send(
+                $message->from_id,
+                (new SendlerChatGPT())->send($message->text),
+                'text'
+            );
+        }
+        // Send to Default answer
+        return $this->defaultAnswer($message->from_id);
+    }
+
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function handlerCommands(HookMessageDTO $message)
+    {
         if ($message->text === Commands::Start->value) {
             return (new StepBotController())->start($message->from_id);
         }
-        if (in_array(InlineKeyboards::StopGPT->value, $callback->parseMarkup())) {
-            return (new InlineKeyboardsController())->stopGPT($callback->from_id);
+        if ($message->text === Commands::StartGPT) {
+            return (new InlineKeyboardsController())->startGPT($message->from_id);
         }
-        // TODO: send to GPT model
-//        if (Redis::exists('start_gpt_' . $message->from_id)) {
-//            return Sendler::send(
-//                $message->from_id,
-//                (new SendlerChatGPT())->send($message->text),
-//                'text'
-//            );
-//        }
-        // Send to Default answer
-        return $this->defaultAnswer($message->from_id);
+        if ($message->text === Commands::StopGPT) {
+            return (new InlineKeyboardsController())->stopGPT($message->from_id);
+        }
+        if ($message->text === Commands::AboutMe) {
+            return (new InlineKeyboardsController())->aboutMe($message->from_id);
+        }
     }
 
     /**
