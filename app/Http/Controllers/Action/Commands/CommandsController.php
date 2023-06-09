@@ -41,7 +41,7 @@ class CommandsController
             ],
             [
                 'text' => 'Мои команды',
-                'callback_data' => 'get_commands',
+                'callback_data' => 'menu',
             ],
         ]);
     }
