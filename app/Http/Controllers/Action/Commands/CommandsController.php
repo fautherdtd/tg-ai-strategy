@@ -37,16 +37,7 @@ class CommandsController
     protected static function start($chatID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/start.html'));
-        return Sendler::sendWithMarkup($chatID, $text, [
-            [
-                'text' => '🤖 Подробнее про меня',
-                'callback_data' => 'about_me'
-            ],
-            [
-                'text' => '⌨️ Мои команды',
-                'callback_data' => 'menu',
-            ],
-        ]);
+        return Sendler::sendImageAndText($chatID, $text, 'https://tg-ai-strategy.shelit.agency/images/hello-img.jpg');
     }
 
     /**

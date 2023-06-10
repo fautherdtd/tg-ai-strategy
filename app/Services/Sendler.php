@@ -34,6 +34,26 @@ class Sendler
 
     /**
      * @param int $chatID
+     * @param string $text
+     * @param string $image
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function sendImageAndText(int $chatID, string $text, string $image)
+    {
+        $client = new Client();
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendPhoto',[
+            'query' => [
+                'chat_id' => $chatID,
+                'caption' => $text,
+                'photo' => $image
+            ]
+        ]);
+        return json_decode($result->getBody(), true);
+    }
+
+    /**
+     * @param int $chatID
      * @param int $messageID
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
