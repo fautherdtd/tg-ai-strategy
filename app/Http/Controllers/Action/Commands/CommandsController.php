@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Redis;
 
 class CommandsController
 {
+    /**
+     * @var array|string[]
+     */
     protected array $functions = [
         'start' => 'start',
         'about_me' => 'aboutMe',
@@ -31,7 +34,7 @@ class CommandsController
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected static function start($chatID)
+    protected static function start($chatID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/start.html'));
         return Sendler::sendWithMarkup($chatID, $text, [

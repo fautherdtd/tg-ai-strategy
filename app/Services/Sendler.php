@@ -57,7 +57,7 @@ class Sendler
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function sendWithMarkup(int $chatID, string $text, array $buttons, string $mode = 'html')
+    public static function sendWithMarkup(int $chatID, string $text, array $buttons, string $mode = 'html'): mixed
     {
         $client = new Client();
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
@@ -68,6 +68,28 @@ class Sendler
                     'inline_keyboard' => [$buttons],
                 ]),
                 'parse_mode' => $mode
+            ]
+        ]);
+        return json_decode($result->getBody(), true);
+    }
+
+    /**
+     * @param int $chatID
+     * @param int $message_id
+     * @param array $buttons
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function editMessageReplyMarkup(int $chatID, int $message_id, array $buttons): mixed
+    {
+        $client = new Client();
+        $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
+            'query' => [
+                'chat_id' => $chatID,
+                'message_id' => $message_id,
+                'reply_markup' => json_encode([
+                    'inline_keyboard' => [$buttons],
+                ]),
             ]
         ]);
         return json_decode($result->getBody(), true);
