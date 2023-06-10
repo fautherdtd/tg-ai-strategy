@@ -47,7 +47,7 @@ class CommandsController
      */
     protected static function aboutMe(int $chatID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/about-me.html'));
+        $text = file_get_contents(resource_path('views/templates/about_me.html'));
         return Sendler::sendImageAndText($chatID, $text, 'https://tg-ai-strategy.shelit.agency/images/about-me.jpg');
     }
 
