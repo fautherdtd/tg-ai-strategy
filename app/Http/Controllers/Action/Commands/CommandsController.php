@@ -47,13 +47,8 @@ class CommandsController
      */
     protected static function aboutMe(int $chatID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/about_me.html'));
-        return Sendler::sendWithMarkup($chatID, $text, [
-            [
-                'text' => '⌨️ Мои команды',
-                'callback_data' => 'menu',
-            ],
-        ]);
+        $text = file_get_contents(resource_path('views/templates/start.html'));
+        return Sendler::sendImageAndText($chatID, $text, 'https://tg-ai-strategy.shelit.agency/images/about-me.jpg');
     }
 
     /**
