@@ -100,7 +100,7 @@ class ActionGPT
     {
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/exist_idea.html')))
-            ->buildText($builder->getButton('delete_idea'));
+            ->buildText();
         return Sendler::send($query);
     }
 }
