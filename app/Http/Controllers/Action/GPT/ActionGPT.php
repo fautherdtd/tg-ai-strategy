@@ -13,6 +13,30 @@ class ActionGPT
     public ChatGPT $gpt;
 
     /**
+     * @param int $chatID
+     * @param string $message
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function finishedCreateIdea(int $chatID, string $message): mixed
+    {
+        Redis::del('start_gpt_' . $chatID, true);
+        $model = ContextGPT::create([
+            'chat_id' => $chatID,
+            'context' => $message
+        ]);
+        $builder = new BuilderMessage($chatID);
+
+        $query = $builder->text(file_get_contents(resource_path('views/templates/finished_create_idea.html')))
+            ->buildText([
+                $builder->textKeyboard('🚀 Проанализировать рынок')
+                    ->callbackKeyboard('analysis_market')
+                    ->inlineFull()
+            ]);
+        return Sendler::send($query);
+    }
+
+    /**
      * @param string $idea
      * @param int $chatID
      * @return mixed
