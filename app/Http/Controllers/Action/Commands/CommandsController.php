@@ -82,22 +82,18 @@ class CommandsController
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected static function menu(int $chatID)
+    protected static function menu(int $chatID): mixed
     {
         $text = file_get_contents(resource_path('views/templates/menu.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
-            [
-                (new CommandsController)->builderInlineKeyboard()
-                    ->text('🤖 Подробнее про меня')
-                    ->callback('about_me')
-                    ->inlineFull()
-            ],
-            [
-                (new CommandsController)->builderInlineKeyboard()
-                    ->text('💬 Включить режим диалога')
-                    ->callback('start_gpt')
-                    ->inlineFull()
-            ]
+            (new CommandsController)->builderInlineKeyboard()
+                ->text('🤖 Подробнее про меня')
+                ->callback('about_me')
+                ->inlineFull(),
+            (new CommandsController)->builderInlineKeyboard()
+                ->text('🤖 Подробнее про меня')
+                ->callback('about_me')
+                ->inlineFull()
         ]);
     }
 }
