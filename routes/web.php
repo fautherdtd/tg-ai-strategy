@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $builder = new BuilderMessage(1);
-
-    $button = $builder->textKeyboard('test')->callbackKeyboard('callback')->inlineFull();
-    $button2 = $builder->textKeyboard('test2')->callbackKeyboard('callback2')->inlineFull();
-    $builder->text('test');
-    dd($builder->buildText([$button, $button2]));
-
+    $query = $builder->text(file_get_contents(resource_path('views/templates/start.html')))
+        ->image('https://tg-ai-strategy.shelit.agency/images/hello-img.jpg')
+        ->buildText(
+            $builder->textKeyboard('❔ Как начать работу')
+                ->callbackKeyboard('how_to_start')
+                ->inlineFull()
+        );
+    dd($query);
 });
