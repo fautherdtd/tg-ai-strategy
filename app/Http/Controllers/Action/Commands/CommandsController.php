@@ -90,10 +90,12 @@ class CommandsController
                 ->text('🤖 Подробнее про меня')
                 ->callback('about_me')
                 ->inlineFull(),
-            (new CommandsController)->builderInlineKeyboard()
-                ->text('🤖 Подробнее про меня')
-                ->callback('about_me')
-                ->inlineFull()
+            [
+                (new CommandsController)->builderInlineKeyboard()
+                    ->text('🤖 Подробнее про меня')
+                    ->callback('about_me')
+                    ->inlineFull()
+            ]
         ]);
     }
 }
