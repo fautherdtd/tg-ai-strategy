@@ -61,7 +61,7 @@ class CommandsController
         $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
             ->buildText([
                 $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
-                    ->callbackKeyboard('how_to_start')
+                    ->callbackKeyboard('create_idea')
                     ->inlineFull()
             ]);
         return Sendler::send($query);
@@ -76,7 +76,7 @@ class CommandsController
     {
         Redis::set('start_gpt_' . $chatID, true);
         $builder = new BuilderMessage($chatID);
-        $query = $builder->text(file_get_contents(resource_path('views/templates/start_gpt.html')))
+        $query = $builder->text(file_get_contents(resource_path('views/templates/create_idea.html')))
             ->buildText();
         return Sendler::send($query);
     }
