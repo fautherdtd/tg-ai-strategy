@@ -2,6 +2,11 @@
 
 namespace App\Services\Telegram;
 
+use App\Services\Telegram\Assets\InlineKeyboardButtons;
+use App\Services\Telegram\Builder\BuilderImage;
+use App\Services\Telegram\Builder\BuilderInlineKeyBoard;
+use App\Services\Telegram\Builder\BuilderText;
+
 class BuilderMessage
 {
     use BuilderText, BuilderImage, BuilderInlineKeyBoard;
@@ -11,6 +16,16 @@ class BuilderMessage
     public function __construct(int $chatID)
     {
         $this->chatID = $chatID;
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function getButton(string $name): array
+    {
+        $button = new InlineKeyboardButtons();
+        return $button->handler($name);
     }
 
     /**

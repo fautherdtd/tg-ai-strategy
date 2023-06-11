@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Telegram\BuilderInlineKeyBoard;
+use App\Services\Telegram\Builder\BuilderInlineKeyBoard;
 
 trait Builders
 {

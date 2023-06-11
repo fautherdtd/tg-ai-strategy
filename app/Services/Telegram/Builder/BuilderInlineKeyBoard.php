@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram;
+namespace App\Services\Telegram\Builder;
 
 
 trait BuilderInlineKeyBoard

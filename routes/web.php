@@ -1,9 +1,8 @@
 <?php
 
-use App\Enums\Commands;
-use App\Services\Telegram\BuilderInlineKeyBoard;
 use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,9 +18,7 @@ Route::get('/', function () {
     $builder = new BuilderMessage(1);
     $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
         ->buildText([
-            $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
-                ->callbackKeyboard('how_to_start')
-                ->inlineFull()
+            $builder->getButton('how_to_start')
         ]);
     dd($query);
 });
