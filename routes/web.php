@@ -2,8 +2,8 @@
 
 use App\Enums\Commands;
 use App\Services\Telegram\BuilderInlineKeyBoard;
+use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,14 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $builder = new BuilderInlineKeyBoard();
+    $builder = new BuilderMessage(1);
 
-    $test1 = $builder
-        ->text('test1')
-        ->callback('call1')->inlineFull();
-    $test2 = $builder
-        ->text('test2')
-        ->callback('call2')->inlineFull();
-    dd($test2);
+    $button = $builder->textKeyboard('test')->callbackKeyboard('callback')->inlineFull();
+    $button2 = $builder->textKeyboard('test2')->callbackKeyboard('callback2')->inlineFull();
+    $builder->text('test');
+    dd($builder->buildText([$button, $button2]));
 
 });

@@ -2,9 +2,8 @@
 
 namespace App\Services\Telegram;
 
-use JetBrains\PhpStorm\ArrayShape;
 
-class BuilderInlineKeyBoard
+trait BuilderInlineKeyBoard
 {
     /**
      * @var array $button
@@ -15,7 +14,7 @@ class BuilderInlineKeyBoard
      * @param string $text
      * @return BuilderInlineKeyBoard
      */
-    public function text(string $text): static
+    public function textKeyboard(string $text): static
     {
         $this->button['text'] = $text;
         return $this;
@@ -25,7 +24,7 @@ class BuilderInlineKeyBoard
      * @param string $callback
      * @return BuilderInlineKeyBoard
      */
-    public function callback(string $callback): static
+    public function callbackKeyboard(string $callback): static
     {
         $this->button['callback_data'] = $callback;
         return $this;

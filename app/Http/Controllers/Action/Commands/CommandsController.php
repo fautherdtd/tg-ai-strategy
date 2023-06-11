@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Action\Commands;
 use App\Enums\Commands;
 use App\Http\Controllers\Builders;
 use App\Services\Sendler;
+use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Redis;
 
 class CommandsController
@@ -15,9 +16,9 @@ class CommandsController
      */
     protected array $functions = [
         'start' => 'start',
+        'how_to_start' => 'howToStart',
+        'create_idea' => 'createIdeaForGPT',
         'about_me' => 'aboutMe',
-        'menu' => 'menu',
-        'start_gpt' => 'startGPT',
         'stop_gpt' => 'stopGPT'
     ];
     /**
@@ -38,8 +39,46 @@ class CommandsController
      */
     protected static function start($chatID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/start.html'));
-        return Sendler::sendImageAndText($chatID, $text, 'https://tg-ai-strategy.shelit.agency/images/hello-img.jpg');
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/start.html')))
+            ->image('https://tg-ai-strategy.shelit.agency/images/hello-img.jpg')
+            ->buildText(
+                $builder->textKeyboard('❔ Как начать работу')
+                    ->callbackKeyboard('how_to_start')
+                    ->inlineFull()
+            );
+        return Sendler::send($query);
+    }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected static function howToStart(int $chatID): mixed
+    {
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
+            ->buildText(
+                $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
+                    ->callbackKeyboard('how_to_start')
+                    ->inlineFull()
+            );
+        return Sendler::send($query);
+    }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected static function createIdeaForGPT(int $chatID): mixed
+    {
+        Redis::set('start_gpt_' . $chatID, true);
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/start_gpt.html')))
+            ->buildText();
+        return Sendler::send($query);
     }
 
     /**
@@ -49,20 +88,11 @@ class CommandsController
      */
     protected static function aboutMe(int $chatID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/about_me.html'));
-        return Sendler::sendImageAndText($chatID, $text, 'https://tg-ai-strategy.shelit.agency/images/about-me.jpg');
-    }
-
-    /**
-     * @param int $chatID
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected static function startGPT(int $chatID): mixed
-    {
-        Redis::set('start_gpt_' . $chatID, true);
-        $text = file_get_contents(resource_path('views/templates/start_gpt.html'));
-        return Sendler::send($chatID, $text);
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/about_me.html')))
+            ->image('https://tg-ai-strategy.shelit.agency/images/about-me.jpg')
+            ->buildImage();
+        return Sendler::send($query);
     }
 
     /**
@@ -75,29 +105,5 @@ class CommandsController
         Redis::del('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
         return Sendler::send($chatID, $text);
-    }
-
-    /**
-     * @param int $chatID
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected static function menu(int $chatID): mixed
-    {
-        $text = file_get_contents(resource_path('views/templates/menu.html'));
-        return Sendler::sendWithMarkup($chatID, $text, [
-            [
-                (new CommandsController)->builderInlineKeyboard()
-                    ->text('🤖 Подробнее про меня')
-                    ->callback('about_me')
-                    ->inlineFull()
-            ],
-            [
-                (new CommandsController)->builderInlineKeyboard()
-                    ->text('🤖 ')
-                    ->callback('about_me')
-                    ->inlineFull()
-            ]
-        ]);
     }
 }

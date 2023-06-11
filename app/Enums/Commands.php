@@ -9,8 +9,8 @@ enum Commands: string
     use Values;
 
     case Start = '/start';
-    case Menu = '/menu';
+    case HowToStart = '/how_to_start';
     case AboutMe = '/about_me';
-    case StartGPT = '/start_gpt';
+    case createIdeaForGPT = '/create_idea';
     case DeleteIdea = '/delete_idea';
 }

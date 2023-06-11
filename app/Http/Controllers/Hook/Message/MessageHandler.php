@@ -9,6 +9,7 @@ use App\Http\Controllers\Action\GPT\ActionGPT;
 use App\Http\Controllers\Action\SendlerChatGPT;
 use App\Services\Sendler;
 use Illuminate\Support\Facades\Redis;
+use App\Services\Telegram\BuilderMessage;
 
 class MessageHandler
 {
@@ -40,13 +41,14 @@ class MessageHandler
      */
     public function defaultAnswer(int $fromID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/default.html'));
-        return Sendler::sendWithMarkup($fromID, $text, [
-            [
-                'text' => 'Включить режим диалога',
-                'callback_data' => 'start_gpt',
-            ]
-        ]);
+        $builder = new BuilderMessage($fromID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/default.html')))
+            ->buildText(
+                $builder->textKeyboard('❔ Как начать работу')
+                    ->callbackKeyboard('how_to_start')
+                    ->inlineFull()
+            );
+        return Sendler::send($query);
     }
 
 }

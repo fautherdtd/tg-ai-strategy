@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Action\GPT;
 
-use App\Http\Controllers\Builders;
 use App\Models\ContextGPT;
 use App\Services\OpenAI\ChatGPT;
 use App\Services\Sendler;
-use App\Services\Telegram\BuilderInlineKeyBoard;
+use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Redis;
 
 class ActionGPT
 {
-    use Builders;
-
     public ChatGPT $gpt;
 
     /**
@@ -30,30 +27,29 @@ class ActionGPT
         if ($model->where('chat_id', $chatID)->exists()) {
             return $this->existIdea($chatID);
         }
-
-        $text = file_get_contents(resource_path('views/templates/exists_idea.html'));
+        // Сохраняем идею в БД
         $model->chat_id = $chatID;
         $model->context = $idea;
         $model->save();
 
-        return Sendler::sendWithMarkup($chatID, $text, [
-            $this->builderInlineKeyboard()
-                ->text('🚀 Проанализировать рынок')
-                ->callback('analysis_market')
-                ->inlineFull(),
-            $this->builderInlineKeyboard()
-                ->text('🎯 Проработать стратегию')
-                ->callback('make_strategy')
-                ->inlineFull(),
-            $this->builderInlineKeyboard()
-                ->text('🤕 Определить риски')
-                ->callback('take_risk')
-                ->inlineFull(),
-            $this->builderInlineKeyboard()
-                ->text('🔥 Дать советы и рекомендации')
-                ->callback('talk_advice')
-                ->inlineFull(),
-        ]);
+        // Создаем запрос
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/exists_idea.html')))
+            ->buildText([
+                $builder->textKeyboard('🚀 Проанализировать рынок')
+                    ->callbackKeyboard('analysis_market')
+                    ->inlineFull(),
+                $builder->textKeyboard('🎯 Проработать стратегию')
+                    ->callbackKeyboard('make_strategy')
+                    ->inlineFull(),
+                $builder->textKeyboard('🤕 Определить риски')
+                    ->callbackKeyboard('take_risk')
+                    ->inlineFull(),
+                $builder->textKeyboard('🔥 Дать советы и рекомендации')
+                    ->callbackKeyboard('talk_advice')
+                    ->inlineFull(),
+            ]);
+        return Sendler::send($query);
     }
 
     /**
@@ -63,15 +59,16 @@ class ActionGPT
      */
     public function existIdea(int $chatID): mixed
     {
-        $text = file_get_contents(resource_path('views/templates/exist_idea.html'));
-        return Sendler::sendWithMarkup($chatID, $text, [
-            $this->builderInlineKeyboard()->text('⚠️ Удалить мою идею и предложить новую.')
-                ->callback('delete_idea')
-                ->inlineFull(),
-            $this->builderInlineKeyboard()
-                ->text('🎯 Посмотреть мой функционал')
-                ->callback('commands_idea')
-                ->inlineFull()
-        ]);
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/exist_idea.html')))
+            ->buildText([
+                $builder->textKeyboard('⚠️ Удалить мою идею и предложить новую.')
+                    ->callbackKeyboard('delete_idea')
+                    ->inlineFull(),
+                $builder->textKeyboard('🎯 Посмотреть мой функционал')
+                    ->callbackKeyboard('commands_idea')
+                    ->inlineFull(),
+            ]);
+        return Sendler::send($query);
     }
 }
