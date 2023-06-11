@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Action\Commands;
 
 use App\Enums\Commands;
 use App\Http\Controllers\Builders;
+use App\Models\ContextGPT;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Redis;
@@ -17,7 +18,7 @@ class CommandsController
     protected array $functions = [
         'start' => 'start',
         'how_to_start' => 'howToStart',
-        'create_idea' => 'createIdeaForGPT',
+        'start_create_idea' => 'startCreateIdea',
         'about_me' => 'aboutMe',
         'stop_gpt' => 'stopGPT'
     ];
@@ -61,7 +62,7 @@ class CommandsController
         $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
             ->buildText([
                 $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
-                    ->callbackKeyboard('create_idea')
+                    ->callbackKeyboard('start_create_idea')
                     ->inlineFull()
             ]);
         return Sendler::send($query);
@@ -72,12 +73,36 @@ class CommandsController
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected static function createIdeaForGPT(int $chatID): mixed
+    protected static function startCreateIdea(int $chatID): mixed
     {
-        Redis::set('start_gpt_' . $chatID, true);
+        Redis::set('create_idea_' . $chatID, true);
         $builder = new BuilderMessage($chatID);
-        $query = $builder->text(file_get_contents(resource_path('views/templates/create_idea.html')))
+        $query = $builder->text(file_get_contents(resource_path('views/templates/start_create_idea.html')))
             ->buildText();
+        return Sendler::send($query);
+    }
+
+    /**
+     * @param int $chatID
+     * @param string $message
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected static function finishedCreateIdea(int $chatID, string $message): mixed
+    {
+        Redis::del('start_gpt_' . $chatID, true);
+        $model = ContextGPT::create([
+            'chat_id' => $chatID,
+            'context' => $message
+        ]);
+        $builder = new BuilderMessage($chatID);
+
+        $query = $builder->text(file_get_contents(resource_path('views/templates/finished_create_idea.html')))
+            ->buildText([
+                $builder->textKeyboard('🚀 Проанализировать рынок')
+                    ->callbackKeyboard('analysis_market')
+                    ->inlineFull()
+            ]);
         return Sendler::send($query);
     }
 

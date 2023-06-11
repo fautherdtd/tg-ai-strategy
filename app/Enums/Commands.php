@@ -11,6 +11,6 @@ enum Commands: string
     case Start = '/start';
     case HowToStart = '/how_to_start';
     case AboutMe = '/about_me';
-    case createIdeaForGPT = '/create_idea';
+    case StartCreateIdea = '/start_create_idea';
     case DeleteIdea = '/delete_idea';
 }

@@ -26,8 +26,8 @@ class MessageHandler
         }
 
         // Если мы находимся в режиме диалога
-        if (Redis::exists('start_gpt_' . $message->from_id)) {
-            return (new ActionGPT())->createIdea($message->text, $message->from_id);
+        if (Redis::exists('create_idea_' . $message->from_id)) {
+            return (new CommandsController())->handler($message->from_id, $message->text);
         }
 
         // Отправляем дефолтное сообщение
