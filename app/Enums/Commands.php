@@ -12,5 +12,5 @@ enum Commands: string
     case Menu = '/menu';
     case AboutMe = '/about_me';
     case StartGPT = '/start_gpt';
-    case StopGPT = '/stop_gpt';
+    case DeleteIdea = '/delete_idea';
 }
