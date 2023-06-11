@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hook\Message;
 use App\DTO\HookMessageDTO;
 use App\Enums\Commands;
 use App\Http\Controllers\Action\Commands\CommandsController;
+use App\Http\Controllers\Action\GPT\ActionGPT;
 use App\Http\Controllers\Action\SendlerChatGPT;
 use App\Services\Sendler;
 use Illuminate\Support\Facades\Redis;
@@ -25,11 +26,9 @@ class MessageHandler
 
         // Если мы находимся в режиме диалога
         if (Redis::exists('start_gpt_' . $message->from_id)) {
-            return Sendler::send(
-                $message->from_id,
-                (new SendlerChatGPT())->send($message->text),
-                'text'
-            );
+            return (new ActionGPT())->createIdea($message->text, [
+               'chat_id' => $message->from_id
+            ]);
         }
 
         // Отправляем дефолтное сообщение

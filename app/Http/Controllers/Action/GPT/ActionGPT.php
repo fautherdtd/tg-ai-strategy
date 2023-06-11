@@ -14,6 +14,7 @@ class ActionGPT
     public function createIdea(string $idea, ...$options)
     {
         $model = new ContextGPT();
+        Redis::del('start_gpt_' . $options['chat_id'], true);
         if ($model->where('chat_id', $options['chat_id'])->exists()) {
             $text = file_get_contents(resource_path('views/templates/create_idea.html'));
             return Sendler::sendWithMarkup($options['chat_id'], $text, [
