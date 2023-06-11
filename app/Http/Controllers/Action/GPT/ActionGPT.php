@@ -101,12 +101,16 @@ class ActionGPT
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/exist_idea.html')))
             ->buildText([
-                $builder->textKeyboard('⚠️ Удалить мою идею и предложить новую.')
-                    ->callbackKeyboard('delete_idea')
-                    ->inlineFull(),
-                $builder->textKeyboard('🎯 Посмотреть мой функционал')
+                [
+                    $builder->textKeyboard('⚠️ Удалить мою идею и предложить новую.')
+                        ->callbackKeyboard('delete_idea')
+                        ->inlineFull()
+                ],
+                [
+                    $builder->textKeyboard('🎯 Выбрать задачу для идеи')
                         ->callbackKeyboard('commands_idea')
                         ->inlineFull()
+                ]
             ]);
         return Sendler::send($query);
     }
