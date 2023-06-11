@@ -27,7 +27,7 @@ class MessageHandler
 
         // Если мы находимся в режиме диалога
         if (Redis::exists('create_idea_' . $message->from_id)) {
-            return (new CommandsController())->handler($message->from_id, $message->text);
+            return (new CommandsController())->handler($message->text, $message->from_id);
         }
 
         // Отправляем дефолтное сообщение
