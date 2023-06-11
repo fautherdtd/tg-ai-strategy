@@ -87,13 +87,13 @@ class CommandsController
         $text = file_get_contents(resource_path('views/templates/menu.html'));
         return Sendler::sendWithMarkup($chatID, $text, [
             [
-                self::builderInlineKeyboard()
+                (new CommandsController)->builderInlineKeyboard()
                     ->text('🤖 Подробнее про меня')
                     ->callback('about_me')
                     ->inlineFull()
             ],
             [
-                self::builderInlineKeyboard()
+                (new CommandsController)->builderInlineKeyboard()
                     ->text('💬 Включить режим диалога')
                     ->callback('start_gpt')
                     ->inlineFull()
