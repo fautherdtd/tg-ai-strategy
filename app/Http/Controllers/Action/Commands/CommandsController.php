@@ -47,7 +47,7 @@ class CommandsController
                     ->callbackKeyboard('how_to_start')
                     ->inlineFull()
             ]);
-        return Sendler::send($query);
+        return Sendler::sendImage($query);
     }
 
     /**
@@ -92,7 +92,7 @@ class CommandsController
         $query = $builder->text(file_get_contents(resource_path('views/templates/about_me.html')))
             ->image('https://tg-ai-strategy.shelit.agency/images/about-me.jpg')
             ->buildImage();
-        return Sendler::send($query);
+        return Sendler::sendImage($query);
     }
 
     /**

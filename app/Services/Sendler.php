@@ -14,7 +14,7 @@ class Sendler
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function send(array $query)
+    public static function send(array $query): mixed
     {
         $client = new Client();
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendMessage',[
@@ -24,21 +24,15 @@ class Sendler
     }
 
     /**
-     * @param int $chatID
-     * @param string $text
-     * @param string $image
+     * @param array $query
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function sendImageAndText(int $chatID, string $text, string $image)
+    public static function sendImage(array $query): mixed
     {
         $client = new Client();
         $result = $client->get('https://api.telegram.org/bot6142963907:AAFt5WcUagK7qRVQiGRm-lSZo78HY4NeIek/sendPhoto',[
-            'query' => [
-                'chat_id' => $chatID,
-                'caption' => $text,
-                'photo' => $image
-            ]
+            'query' => $query
         ]);
         return json_decode($result->getBody(), true);
     }
