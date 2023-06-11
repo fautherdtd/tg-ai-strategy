@@ -42,11 +42,11 @@ class CommandsController
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/start.html')))
             ->image('https://tg-ai-strategy.shelit.agency/images/hello-img.jpg')
-            ->buildText(
+            ->buildText([
                 $builder->textKeyboard('❔ Как начать работу')
                     ->callbackKeyboard('how_to_start')
                     ->inlineFull()
-            );
+            ]);
         return Sendler::send($query);
     }
 
