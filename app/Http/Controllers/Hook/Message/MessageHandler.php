@@ -43,11 +43,11 @@ class MessageHandler
     {
         $builder = new BuilderMessage($fromID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/default.html')))
-            ->buildText(
+            ->buildText([
                 $builder->textKeyboard('❔ Как начать работу')
                     ->callbackKeyboard('how_to_start')
                     ->inlineFull()
-            );
+            ]);
         return Sendler::send($query);
     }
 
