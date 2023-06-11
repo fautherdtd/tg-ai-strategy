@@ -85,7 +85,25 @@ class Sendler
                 'chat_id' => $chatID,
                 'text' => $text,
                 'reply_markup' => json_encode([
-                    'inline_keyboard' => $buttons
+                    'inline_keyboard' => array(
+                        array(
+                            array(
+                                'text' => 'Button 2',
+                                'callback_data' => 'test_2',
+                            ),
+                        ),
+                        array(
+                            array(
+                                'text' => 'Button 3',
+                                'callback_data' => 'test_3',
+                            ),
+
+                            array(
+                                'text' => 'Button 4',
+                                'callback_data' => 'test_4',
+                            ),
+                        )
+                    )
                 ]),
                 'parse_mode' => $mode
             ]

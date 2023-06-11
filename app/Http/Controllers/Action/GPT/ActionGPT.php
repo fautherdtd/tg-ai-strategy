@@ -17,25 +17,7 @@ class ActionGPT
         Redis::del('start_gpt_' . $chatID, true);
         if ($model->where('chat_id', $chatID)->exists()) {
             $text = file_get_contents(resource_path('views/templates/create_idea.html'));
-            return Sendler::sendWithMarkup($chatID, $text, array(
-                array(
-                    array(
-                        'text' => 'Button 2',
-                        'callback_data' => 'test_2',
-                    ),
-                ),
-                array(
-                    array(
-                        'text' => 'Button 3',
-                        'callback_data' => 'test_3',
-                    ),
-
-                    array(
-                        'text' => 'Button 4',
-                        'callback_data' => 'test_4',
-                    ),
-                )
-            ));
+            return Sendler::sendWithMarkup($chatID, $text, []);
 
 //            [
 //                [
