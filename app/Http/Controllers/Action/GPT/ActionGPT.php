@@ -21,12 +21,15 @@ class ActionGPT
     public function finishedCreateIdea(int $chatID, string $message): mixed
     {
         Redis::del('start_gpt_' . $chatID, true);
+        if (ContextGPT::where('chat_id', $chatID)->exists()) {
+            return $this->existIdea($chatID);
+        }
         $model = ContextGPT::create([
             'chat_id' => $chatID,
             'context' => $message
         ]);
-        $builder = new BuilderMessage($chatID);
 
+        $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/finished_create_idea.html')))
             ->buildText([
                 $builder->textKeyboard('🚀 Проанализировать рынок')
