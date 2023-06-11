@@ -26,13 +26,11 @@ class MessageHandler
 
         // Если мы находимся в режиме диалога
         if (Redis::exists('start_gpt_' . $message->from_id)) {
-            return (new ActionGPT())->createIdea($message->text, [
-               'chat_id' => $message->from_id
-            ]);
+            return (new ActionGPT())->createIdea($message->text, $message->from_id);
         }
 
         // Отправляем дефолтное сообщение
-//        return $this->defaultAnswer($message->from_id);
+        return $this->defaultAnswer($message->from_id);
     }
 
     /**

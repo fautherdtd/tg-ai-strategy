@@ -11,13 +11,13 @@ class ActionGPT
 {
     public ChatGPT $gpt;
 
-    public function createIdea(string $idea, ...$options)
+    public function createIdea(string $idea, int $chatID)
     {
         $model = new ContextGPT();
-        Redis::del('start_gpt_' . $options['chat_id'], true);
-        if ($model->where('chat_id', $options['chat_id'])->exists()) {
+        Redis::del('start_gpt_' . $chatID, true);
+        if ($model->where('chat_id', $chatID)->exists()) {
             $text = file_get_contents(resource_path('views/templates/create_idea.html'));
-            return Sendler::sendWithMarkup($options['chat_id'], $text, [
+            return Sendler::sendWithMarkup($chatID, $text, [
                 [
                     [
                         'text' => '⚠️ Удалить мою идею и предложить новую.',
@@ -33,11 +33,11 @@ class ActionGPT
             ]);
         } else {
             $text = file_get_contents(resource_path('views/templates/exists_idea.html'));
-            $model->chat_id = $options['chat_id'];
+            $model->chat_id = $chatID;
             $model->context = $idea;
             $model->save();
         }
-        return Sendler::sendWithMarkup($options['chat_id'], $text, [
+        return Sendler::sendWithMarkup($chatID, $text, [
             [
                 [
                     'text' => '🚀 Проанализировать рынок',
