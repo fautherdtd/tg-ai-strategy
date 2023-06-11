@@ -59,11 +59,11 @@ class CommandsController
     {
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
-            ->buildText(
+            ->buildText([
                 $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
                     ->callbackKeyboard('how_to_start')
                     ->inlineFull()
-            );
+            ]);
         return Sendler::send($query);
     }
 
