@@ -94,15 +94,10 @@ class Sendler
                         ),
                         array(
                             array(
-                                'text' => 'Button 3',
-                                'callback_data' => 'test_3',
+                                'text' => 'Button 2',
+                                'callback_data' => 'test_2',
                             ),
-
-                            array(
-                                'text' => 'Button 4',
-                                'callback_data' => 'test_4',
-                            ),
-                        )
+                        ),
                     )
                 ]),
                 'parse_mode' => $mode
