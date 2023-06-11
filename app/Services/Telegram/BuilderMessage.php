@@ -22,10 +22,10 @@ class BuilderMessage
         $query = [
             'chat_id' => $this->chatID,
             'text' => $this->text,
-            'mode' => $this->mode
+            'parse_mode' => $this->mode
         ];
         if (!empty($buttons)) {
-            $query['reply_markup'] = json_encode(['inline_keyboard' => $buttons]);
+            $query['reply_markup'] = json_encode(['inline_keyboard' => [$buttons]]);
         }
         return $query;
     }
