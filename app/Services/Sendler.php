@@ -85,7 +85,11 @@ class Sendler
                 'chat_id' => $chatID,
                 'text' => $text,
                 'reply_markup' => json_encode([
-                    'inline_keyboard' => $buttons,
+                    'keyboard' => [
+                        $buttons,
+                        'one_time_keyboard' => TRUE,
+                        'resize_keyboard' => TRUE,
+                    ],
                 ]),
                 'parse_mode' => $mode
             ]
