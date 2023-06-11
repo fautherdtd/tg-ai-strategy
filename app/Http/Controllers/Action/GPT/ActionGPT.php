@@ -34,20 +34,28 @@ class ActionGPT
 
         // Создаем запрос
         $builder = new BuilderMessage($chatID);
-        $query = $builder->text(file_get_contents(resource_path('views/templates/exists_idea.html')))
+        $query = $builder->text(file_get_contents(resource_path('views/templates/create_idea.html')))
             ->buildText([
-                $builder->textKeyboard('🚀 Проанализировать рынок')
-                    ->callbackKeyboard('analysis_market')
-                    ->inlineFull(),
-                $builder->textKeyboard('🎯 Проработать стратегию')
-                    ->callbackKeyboard('make_strategy')
-                    ->inlineFull(),
-                $builder->textKeyboard('🤕 Определить риски')
-                    ->callbackKeyboard('take_risk')
-                    ->inlineFull(),
-                $builder->textKeyboard('🔥 Дать советы и рекомендации')
-                    ->callbackKeyboard('talk_advice')
-                    ->inlineFull(),
+                [
+                    $builder->textKeyboard('🚀 Проанализировать рынок')
+                        ->callbackKeyboard('analysis_market')
+                        ->inlineFull()
+                ],
+                [
+                    $builder->textKeyboard('🎯 Проработать стратегию')
+                        ->callbackKeyboard('make_strategy')
+                        ->inlineFull()
+                ],
+                [
+                    $builder->textKeyboard('🤕 Определить риски')
+                        ->callbackKeyboard('take_risk')
+                        ->inlineFull()
+                ],
+                [
+                    $builder->textKeyboard('🔥 Дать советы и рекомендации')
+                        ->callbackKeyboard('talk_advice')
+                        ->inlineFull()
+                ],
             ]);
         return Sendler::send($query);
     }
