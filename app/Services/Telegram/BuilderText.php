@@ -5,7 +5,7 @@ namespace App\Services\Telegram;
 trait BuilderText
 {
     public string $text;
-    public string $mode;
+    public string $mode = 'html';
 
     /**
      * @param string $text

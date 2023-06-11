@@ -21,7 +21,8 @@ class BuilderMessage
     {
         $query = [
             'chat_id' => $this->chatID,
-            'text' => $this->text
+            'text' => $this->text,
+            'mode' => $this->mode
         ];
         if (!empty($buttons)) {
             $query['reply_markup'] = [json_encode(['inline_keyboard' => $buttons])];
