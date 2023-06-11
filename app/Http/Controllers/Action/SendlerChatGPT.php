@@ -11,4 +11,9 @@ class SendlerChatGPT extends Controller
     {
         return (new ChatGPT())->make($text);
     }
+
+    public function saveMessage(array $array)
+    {
+
+    }
 }
