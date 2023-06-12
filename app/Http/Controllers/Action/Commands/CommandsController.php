@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Action\Commands;
 
 use App\Enums\Commands;
+use App\Http\Controllers\Action\GPT\ActionGPT;
 use App\Http\Controllers\Builders;
 use App\Models\ContextGPT;
 use App\Services\Sendler;
@@ -71,6 +72,9 @@ class CommandsController
      */
     protected static function startCreateIdea(int $chatID): mixed
     {
+        if (ContextGPT::where('chat_id', $chatID)->exists()) {
+            return (new ActionGPT())->existIdea($chatID);
+        }
         Redis::set('create_idea_' . $chatID, true);
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/start_create_idea.html')))
