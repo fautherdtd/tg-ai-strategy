@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Action\GPT;
 
 use App\Enums\GPTAction;
 use App\Models\ContextGPT;
+use App\Services\OpenAI\ChatGPT;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
 
@@ -40,14 +41,19 @@ class TaskGPT
         $placeholder = [
             'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
             'idea' => '"'. $idea->context . '"',
-            'tasks' => implode(' /br', [
+            'tasks' => implode(' ', [
                 '1. Проанализируй мне полностью рынок.',
                 '2. Исследуй рынок и помоги сегментировать целевую аудиторию.',
             ])
         ];
 
+        $gpt = new ChatGPT();
+        $result = $gpt->make(implode(' ', $placeholder));
+
         $builder = new BuilderMessage($this->chatID);
-        $query = $builder->text(implode('. ', $placeholder))->buildText();
-        return Sendler::send($query);
+        Sendler::send(
+          $builder->text($result)->buildText()
+        );
+
     }
 }
