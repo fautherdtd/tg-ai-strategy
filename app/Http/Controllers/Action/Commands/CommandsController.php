@@ -58,7 +58,7 @@ class CommandsController
     {
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
-            ->buildText($builder->getButton('start_create_idea'));
+            ->buildText([$builder->getButton('start_create_idea')]);
         return Sendler::send($query);
     }
 
