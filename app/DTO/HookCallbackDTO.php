@@ -18,6 +18,8 @@ class HookCallbackDTO
     public string $username;
     /** @var array $markup */
     public array $markup;
+    /** @var string $data */
+    public string $data;
 
     /**
      * @param Request $request

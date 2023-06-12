@@ -21,7 +21,11 @@ class TaskGPT
         $this->chatID = $chatID;
     }
 
-    public function getTask(string $task)
+    /**
+     * @param string $task
+     * @return false|mixed
+     */
+    public function getTask(string $task): mixed
     {
         return call_user_func('self::' . $this->tasks[$task]);
     }
@@ -30,7 +34,7 @@ class TaskGPT
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function analysisMarket()
+    protected function analysisMarket(): mixed
     {
         $idea = ContextGPT::where('chat_id', $this->chatID)->pluck('context');
         $placeholder = [
