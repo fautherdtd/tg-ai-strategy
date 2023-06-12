@@ -41,7 +41,9 @@ class BuilderMessage
         ];
         if (!empty($buttons)) {
             $query['reply_markup'] = json_encode(array(
-                'inline_keyboard' => array($buttons)
+                'inline_keyboard' => array(
+                    $buttons
+                ),
             ));
         }
         return $query;
