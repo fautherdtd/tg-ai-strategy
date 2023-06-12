@@ -23,7 +23,7 @@ class MessageHandler
         // Если пользователь запустил команду
         if (in_array($message->text, Commands::values())) {
             return (new CommandsController())->handler(
-                preg_replace('/[^a-zA-Z]/', '', $message->text),
+                preg_replace('/[^a-zA-Z_]/', '', $message->text),
                 $message->from_id);
         }
 
