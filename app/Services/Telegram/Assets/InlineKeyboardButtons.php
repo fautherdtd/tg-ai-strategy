@@ -112,7 +112,7 @@ class InlineKeyboardButtons
     public static function deleteIdea(): array
     {
         return [
-            'text' => '⚠️ Удалить мою идею и предложить новую.',
+            'text' => '⚠️ Удалить идею/бизнес и создать новую',
             'callback_data' => 'delete_idea'
         ];
     }

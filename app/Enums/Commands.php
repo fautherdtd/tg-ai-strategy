@@ -13,4 +13,5 @@ enum Commands: string
     case AboutMe = '/about_me';
     case StartCreateIdea = '/start_create_idea';
     case DeleteIdea = '/delete_idea';
+    case CommandsIdea = '/commands_idea';
 }
