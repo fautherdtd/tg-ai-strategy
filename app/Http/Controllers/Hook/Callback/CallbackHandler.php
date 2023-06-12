@@ -24,7 +24,7 @@ class CallbackHandler extends Controller
 
         // Action command GPT
         if (in_array($callback->data, GPTAction::values())) {
-            return (new TaskGPT($callback->from_id))->analysisMarket();
+            return (new TaskGPT($callback->from_id))->getTask($callback->data);
         }
     }
 }

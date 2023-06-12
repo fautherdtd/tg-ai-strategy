@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Action\GPT;
 
+use App\Enums\GPTAction;
 use App\Models\ContextGPT;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
@@ -9,7 +10,9 @@ use App\Services\Telegram\BuilderMessage;
 class TaskGPT
 {
     public int $chatID;
-
+    public array $tasks = [
+        'analysis_market' => 'analysisMarket'
+    ];
     /**
      * @param int $chatID
      */
@@ -18,11 +21,16 @@ class TaskGPT
         $this->chatID = $chatID;
     }
 
+    public function getTask(string $task)
+    {
+        return call_user_func('self::' . $this->tasks[$task]);
+    }
+
     /**
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function analysisMarket()
+    protected function analysisMarket()
     {
         $idea = ContextGPT::where('chat_id', $this->chatID)->pluck('context');
         $placeholder = [
