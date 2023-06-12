@@ -21,8 +21,10 @@ class MessageHandler
     public function handler(HookMessageDTO $message)
     {
         // Если пользователь запустил команду
-        if (in_array($message->text, Commands::values())) {
-            return (new CommandsController())->handler($message->text, $message->from_id);
+        if (in_array('/' . $message->text, Commands::values())) {
+            return (new CommandsController())->handler(
+                preg_replace('/[^a-zA-Z]/', '', $message->text),
+                $message->from_id);
         }
 
         // Если мы находимся в режиме диалога
