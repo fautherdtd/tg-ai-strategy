@@ -117,4 +117,12 @@ class InlineKeyboardButtons
         ];
     }
 
+    public static function groupOfficial(): array
+    {
+        return [
+            'text' => '👥 Наше сообщество',
+            'url' => 'https://t.me/aistrategycore'
+        ];
+    }
+
 }
