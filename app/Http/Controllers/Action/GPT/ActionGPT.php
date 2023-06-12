@@ -20,7 +20,7 @@ class ActionGPT
      */
     public function finishedCreateIdea(int $chatID, string $message): mixed
     {
-        Redis::del('start_gpt_' . $chatID, true);
+        Redis::del('create_idea_' . $chatID, true);
         if (ContextGPT::where('chat_id', $chatID)->exists()) {
             return $this->existIdea($chatID);
         }
@@ -31,64 +31,13 @@ class ActionGPT
 
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/finished_create_idea.html')))
-            ->buildText([
-                $builder->textKeyboard('🚀 Проанализировать рынок')
-                    ->callbackKeyboard('analysis_market')
-                    ->inlineFull()
-            ]);
+            ->buildText(
+                [$builder->getButton('analysis_market')],
+                [$builder->getButton('make_strategy')],
+                [$builder->getButton('take_risk')],
+                [$builder->getButton('talk_advice')],
+            );
         return Sendler::send($query);
-    }
-
-    /**
-     * @param string $idea
-     * @param int $chatID
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function createIdea(string $idea, int $chatID): mixed
-    {
-        $model = new ContextGPT();
-        Redis::del('start_gpt_' . $chatID, true);
-
-        // Если идея уже сохранена
-        if ($model->where('chat_id', $chatID)->exists()) {
-            return $this->existIdea($chatID);
-        }
-        // Сохраняем идею в БД
-        $model->chat_id = $chatID;
-        $model->context = $idea;
-        $model->save();
-
-        // Создаем запрос
-        $builder = new BuilderMessage($chatID);
-        $query = $builder->text(file_get_contents(resource_path('views/templates/create_idea.html')))
-            ->buildText([
-                $builder->textKeyboard('🚀 Проанализировать рынок')
-                ->callbackKeyboard('analysis_market')
-                ->inlineFull()
-            ]);
-        return Sendler::send($query);
-
-//        [
-//            $builder->textKeyboard('🚀 Проанализировать рынок')
-//                ->callbackKeyboard('analysis_market')
-//                ->inlineFull()
-//        ],
-//                [
-//                    $builder->textKeyboard('🎯 Проработать стратегию')
-//                        ->callbackKeyboard('make_strategy')
-//                        ->inlineFull()
-//                ],
-//                [
-//                    $builder->textKeyboard('🤕 Определить риски')
-//                        ->callbackKeyboard('take_risk')
-//                        ->inlineFull()
-//                ],
-//                [
-//                    $builder->textKeyboard('🔥 Дать советы и рекомендации')
-//                        ->callbackKeyboard('talk_advice')
-//                        ->inlineFull()
-//                ],
     }
 
     /**
@@ -100,7 +49,10 @@ class ActionGPT
     {
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/exist_idea.html')))
-            ->buildText();
+            ->buildText(
+                [$builder->getButton('delete_idea')],
+                [$builder->getButton('commands_idea')],
+            );
         return Sendler::send($query);
     }
 }
