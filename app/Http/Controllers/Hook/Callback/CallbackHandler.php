@@ -19,7 +19,7 @@ class CallbackHandler extends Controller
     public function handler(HookCallbackDTO $callback)
     {
         // Action command default
-        if (in_array($callback->data, Commands::values())) {
+        if (in_array('/' . $callback->data, Commands::values())) {
             return (new CommandsController())->handler($callback->data, $callback->from_id);
         }
 
