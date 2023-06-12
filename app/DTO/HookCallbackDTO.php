@@ -14,8 +14,6 @@ class HookCallbackDTO
     public int $from_id;
     /** @var string $name */
     public string $name;
-    /** @var string $username */
-    public string $username;
     /** @var array $markup */
     public array $markup;
     /** @var string $data */
@@ -29,7 +27,6 @@ class HookCallbackDTO
         $this->message_id = $request->input('callback_query.message.message_id');
         $this->from_id = $request->input('callback_query.from.id');
         $this->name = $request->input('callback_query.from.first_name') . ' ' . $request->input('message.from.last_name');
-        $this->username = $request->input('callback_query.from.username');
         $this->markup = $request->input('callback_query.message.reply_markup');
         $this->data = $request->input('callback_query.data');
     }
