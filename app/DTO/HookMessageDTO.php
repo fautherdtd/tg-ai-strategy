@@ -12,8 +12,6 @@ class HookMessageDTO
     public int $from_id;
     /** @var string $name */
     public string $name;
-    /** @var string $username */
-    public string $username;
     /** @var string $text */
     public string $text;
 
@@ -25,7 +23,6 @@ class HookMessageDTO
         $this->message_id = $request->input('message.message_id');
         $this->from_id = $request->input('message.from.id');
         $this->name = $request->input('message.from.first_name') . ' ' . $request->input('message.from.last_name');
-        $this->username = $request->input('message.from.username');
         $this->text = $request->input('message.text');
     }
 }
