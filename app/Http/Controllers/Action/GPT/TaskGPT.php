@@ -15,6 +15,7 @@ class TaskGPT
         'analysis_market' => 'analysisMarket',
         'make_strategy' => 'makeStrategy',
         'take_risk' => 'takeRisk',
+        'talk_advice' => 'talkAdvice'
     ];
     /**
      * @param int $chatID
