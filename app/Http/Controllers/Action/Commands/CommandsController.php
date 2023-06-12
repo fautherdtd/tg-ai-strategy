@@ -20,7 +20,8 @@ class CommandsController
         'how_to_start' => 'howToStart',
         'start_create_idea' => 'startCreateIdea',
         'about_me' => 'aboutMe',
-        'stop_gpt' => 'stopGPT'
+        'stop_gpt' => 'stopGPT',
+        'commands_idea' => 'commandsIdea',
     ];
     /**
      * @param string $command
@@ -100,5 +101,23 @@ class CommandsController
         Redis::del('start_gpt_' . $chatID, true);
         $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
         return Sendler::send($chatID, $text);
+    }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected static function commandsIdea(int $chatID): mixed
+    {
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/commands_idea.html')))
+            ->buildText(
+                [$builder->getButton('analysis_market')],
+                [$builder->getButton('make_strategy')],
+                [$builder->getButton('take_risk')],
+                [$builder->getButton('talk_advice')]
+            );
+        return Sendler::send($query)
     }
 }
