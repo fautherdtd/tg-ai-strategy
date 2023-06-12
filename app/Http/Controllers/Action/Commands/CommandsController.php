@@ -118,6 +118,6 @@ class CommandsController
                 [$builder->getButton('take_risk')],
                 [$builder->getButton('talk_advice')]
             );
-        return Sendler::send($query)
+        return Sendler::send($query);
     }
 }
