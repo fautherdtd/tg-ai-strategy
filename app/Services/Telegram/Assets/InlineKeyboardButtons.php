@@ -16,6 +16,7 @@ class InlineKeyboardButtons
         'talk_advice' => 'talkAdvice',
         'commands_idea' => 'commandsIdea',
         'delete_idea' => 'deleteIdea',
+        'group_official' => 'groupOfficial'
     ];
 
     /**
