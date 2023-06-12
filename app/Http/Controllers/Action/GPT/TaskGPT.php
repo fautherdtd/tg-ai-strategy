@@ -38,13 +38,16 @@ class TaskGPT
     {
         $idea = ContextGPT::where('chat_id', $this->chatID)->first();
         $placeholder = [
-            'preview' => 'У меня есть бизнес -',
-            'idea' => $idea->context,
-            'task' => 'Проанализируй мне рынок по моему бизнесу и напиши мне подробнее этот анализ рынка.'
+            'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
+            'idea' => '"'. $idea->context . '"',
+            'tasks' => implode(' /br', [
+                '1. Проанализируй мне полностью рынок.',
+                '2. Исследуй рынок и помоги сегментировать целевую аудиторию.',
+            ])
         ];
 
         $builder = new BuilderMessage($this->chatID);
-        $query = $builder->text(implode($placeholder))->buildText();
+        $query = $builder->text(implode('. ', $placeholder))->buildText();
         return Sendler::send($query);
     }
 }
