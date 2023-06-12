@@ -32,7 +32,7 @@ class BuilderMessage
      * @param array $buttons
      * @return array
      */
-    public function buildText(array $buttons = []): array
+    public function buildText(...$buttons): array
     {
         $query = [
             'chat_id' => $this->chatID,
@@ -51,7 +51,7 @@ class BuilderMessage
      * @param array $buttons
      * @return array
      */
-    public function buildImage(array $buttons = []): array
+    public function buildImage(...$buttons): array
     {
         $query = [
             'chat_id' => $this->chatID,

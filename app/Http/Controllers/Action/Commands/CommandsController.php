@@ -43,9 +43,7 @@ class CommandsController
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/start.html')))
             ->image('https://tg-ai-strategy.shelit.agency/images/hello-img.jpg')
-            ->buildImage([
-                $builder->getButton('how_to_start')
-            ]);
+            ->buildImage($builder->getButton('how_to_start'), $builder->getButton('how_to_start'));
         return Sendler::sendImage($query);
     }
 
@@ -58,11 +56,7 @@ class CommandsController
     {
         $builder = new BuilderMessage($chatID);
         $query = $builder->text(file_get_contents(resource_path('views/templates/how_to_start.html')))
-            ->buildText([
-                $builder->textKeyboard('💬 Рассказать свою идею / бизнес')
-                    ->callbackKeyboard('start_create_idea')
-                    ->inlineFull()
-            ]);
+            ->buildText($builder->getButton('start_create_idea'));
         return Sendler::send($query);
     }
 
