@@ -8,6 +8,7 @@ use App\Enums\GPTAction;
 use App\Http\Controllers\Action\Commands\CommandsController;
 use App\Http\Controllers\Action\GPT\TaskGPT;
 use App\Http\Controllers\Controller;
+use App\Models\ContextGPT;
 
 class CallbackHandler extends Controller
 {
@@ -24,6 +25,9 @@ class CallbackHandler extends Controller
 
         // Action command GPT
         if (in_array($callback->data, GPTAction::values())) {
+            if (! ContextGPT::where('chat_id', $callback->from_id)->exists()) {
+                return (new CommandsController())->handler('howToStart', $callback->from_id);
+            }
             return (new TaskGPT($callback->from_id))->getTask($callback->data);
         }
     }

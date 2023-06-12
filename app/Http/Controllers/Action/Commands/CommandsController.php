@@ -22,6 +22,7 @@ class CommandsController
         'about_me' => 'aboutMe',
         'stop_gpt' => 'stopGPT',
         'commands_idea' => 'commandsIdea',
+        'delete_idea' => 'deleteIdea',
     ];
     /**
      * @param string $command
@@ -96,11 +97,15 @@ class CommandsController
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected static function stopGPT(int $chatID): mixed
+    protected static function deleteIdea(int $chatID): mixed
     {
-        Redis::del('start_gpt_' . $chatID, true);
-        $text = file_get_contents(resource_path('views/templates/stop_gpt.html'));
-        return Sendler::send($chatID, $text);
+        $model = ContextGPT::where('chat_id', $chatID)->delete();
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/delete_idea.html')))
+            ->buildText(
+                [$builder->getButton('how_to_start')],
+            );
+        return Sendler::send($query);
     }
 
     /**

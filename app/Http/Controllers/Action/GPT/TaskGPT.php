@@ -136,4 +136,17 @@ class TaskGPT
           $builder->text($result)->buildText()
         );
     }
+
+    protected function makeFinanceStrategy()
+    {
+        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
+        $placeholder = [
+            'role' => 'Ты - финансовый директо. Твоя задача изучить мою идею, которая написана далее в кавычках',
+            'idea' => '"'. $idea->context . '"',
+            'tasks' => 'Напиши мне финансовые прогнозы '
+        ];
+
+        $gpt = new ChatGPT();
+        $result = $gpt->make(implode(' ', $placeholder));
+    }
 }
