@@ -14,6 +14,7 @@ class TaskGPT
     public array $tasks = [
         'analysis_market' => 'analysisMarket',
         'make_strategy' => 'makeStrategy',
+        'take_risk' => 'takeRisk',
     ];
     /**
      * @param int $chatID
@@ -83,5 +84,56 @@ class TaskGPT
           $builder->text($result)->buildText()
         );
 
+    }
+
+    /**
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function takeRisk(): mixed
+    {
+        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
+        $placeholder = [
+            'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
+            'idea' => '"'. $idea->context . '"',
+            'tasks' => implode(' ', [
+                '1. Определи все риски.',
+                '2. Опиши с какими проблемами я могу столкнуться и как их избежать,
+                    используя знания всех юридических законов в том числе.',
+            ])
+        ];
+
+        $gpt = new ChatGPT();
+        $result = $gpt->make(implode(' ', $placeholder));
+
+        $builder = new BuilderMessage($this->chatID);
+        return Sendler::send(
+          $builder->text($result)->buildText()
+        );
+    }
+
+    /**
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function talkAdvice(): mixed
+    {
+        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
+        $placeholder = [
+            'role' => 'Ты - маркетолог и специалист по найму. Твоя задача изучить мою идею, которая написана далее в кавычках',
+            'idea' => '"'. $idea->context . '"',
+            'tasks' => implode(' ', [
+                '1. Дай мне советы как маркетолог в этом бизнесе.',
+                '2. Я предприниматель и мне нужна команда. Скажи мне какую команду мне надо нанять для старта.',
+            ])
+        ];
+
+        $gpt = new ChatGPT();
+        $result = $gpt->make(implode(' ', $placeholder));
+
+        $builder = new BuilderMessage($this->chatID);
+        return Sendler::send(
+          $builder->text($result)->buildText()
+        );
     }
 }
