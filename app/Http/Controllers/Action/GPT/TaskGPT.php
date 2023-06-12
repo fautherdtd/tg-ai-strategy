@@ -48,10 +48,9 @@ class TaskGPT
                 '2. Исследуй рынок и помоги сегментировать целевую аудиторию.',
             ])
         ];
-
+        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/analysis.jpg');
         $gpt = new ChatGPT();
         $result = $gpt->make(implode(' ', $placeholder));
-
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
@@ -70,15 +69,14 @@ class TaskGPT
             'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
             'idea' => '"'. $idea->context . '"',
             'tasks' => implode(' ', [
-                '1. Изучи всех конкурентов в этой области.',
+                '1. Изучи топ 3 конкурентов в этой области.',
                 '2. Напиши мне подробнее развитие моего бизнеса от 0 до первой прибыли.',
                 '3. Опиши мне эту стратегию развития максимально эффективно и подробно.',
             ])
         ];
-
+        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/strategy.jpg');
         $gpt = new ChatGPT();
         $result = $gpt->make(implode(' ', $placeholder));
-
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
@@ -102,10 +100,9 @@ class TaskGPT
                     используя знания всех юридических законов в том числе.',
             ])
         ];
-
+        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/risk.jpg');
         $gpt = new ChatGPT();
         $result = $gpt->make(implode(' ', $placeholder));
-
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
@@ -127,26 +124,26 @@ class TaskGPT
                 '2. Я предприниматель и мне нужна команда. Скажи мне какую команду мне надо нанять для старта.',
             ])
         ];
-
+        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/advice.jpg');
         $gpt = new ChatGPT();
         $result = $gpt->make(implode(' ', $placeholder));
-
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
         );
     }
 
-    protected function makeFinanceStrategy()
+    /**
+     * @param string $cover
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function processAiForTask(string $cover): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
-        $placeholder = [
-            'role' => 'Ты - финансовый директо. Твоя задача изучить мою идею, которая написана далее в кавычках',
-            'idea' => '"'. $idea->context . '"',
-            'tasks' => 'Напиши мне финансовые прогнозы '
-        ];
-
-        $gpt = new ChatGPT();
-        $result = $gpt->make(implode(' ', $placeholder));
+        $builder = new BuilderMessage($this->chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/proccess_ai_for_task.html')))
+            ->image($cover)
+            ->buildImage();
+        return Sendler::sendImage($query);
     }
 }
