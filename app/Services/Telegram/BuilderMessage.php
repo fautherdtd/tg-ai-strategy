@@ -40,9 +40,9 @@ class BuilderMessage
             'parse_mode' => $this->mode
         ];
         if (!empty($buttons)) {
-            $query['reply_markup'] = json_encode(array(
-                'inline_keyboard' => [$buttons],
-            ));
+            $query['reply_markup'] = json_encode([
+                'inline_keyboard' => [$buttons]
+            ]);
         }
         return $query;
     }
