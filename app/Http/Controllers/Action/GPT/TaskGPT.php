@@ -141,7 +141,8 @@ class TaskGPT
     protected function processAiForTask(string $cover): mixed
     {
         $builder = new BuilderMessage($this->chatID);
-        $query = $builder->text(file_get_contents(resource_path('views/templates/proccess_ai_for_task.html')))
+        $query = $builder
+            ->text(file_get_contents(resource_path('views/templates/process_ai_for_task.html')))
             ->image($cover)
             ->buildImage();
         return Sendler::sendImage($query);
