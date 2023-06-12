@@ -93,7 +93,7 @@ class CommandsController
         $query = $builder->text(file_get_contents(resource_path('views/templates/about_me.html')))
             ->image('https://tg-ai-strategy.shelit.agency/images/about-me.jpg')
             ->buildImage(
-                $builder->getButton('group_official')
+                [$builder->getButton('group_official')]
             );
         return Sendler::sendImage($query);
     }
