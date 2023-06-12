@@ -51,7 +51,7 @@ class TaskGPT
         $result = $gpt->make(implode(' ', $placeholder));
 
         $builder = new BuilderMessage($this->chatID);
-        Sendler::send(
+        return Sendler::send(
           $builder->text($result)->buildText()
         );
 
