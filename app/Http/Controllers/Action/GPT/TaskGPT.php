@@ -36,10 +36,10 @@ class TaskGPT
      */
     protected function analysisMarket(): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->pluck('context');
+        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
         $placeholder = [
             'preview' => 'У меня есть бизнес -',
-            'idea' => $idea,
+            'idea' => $idea->context,
             'task' => 'Проанализируй мне рынок по моему бизнесу и напиши мне подробнее этот анализ рынка.'
         ];
 
