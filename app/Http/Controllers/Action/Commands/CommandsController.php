@@ -45,7 +45,6 @@ class CommandsController
             ->image('https://tg-ai-strategy.shelit.agency/images/hello-img.jpg')
             ->buildImage([
                 $builder->getButton('how_to_start'),
-                $builder->getButton('how_to_start')
             ]);
         return Sendler::sendImage($query);
     }
