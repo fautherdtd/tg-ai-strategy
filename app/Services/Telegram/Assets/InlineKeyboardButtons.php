@@ -104,7 +104,7 @@ class InlineKeyboardButtons
     {
         return [
             'text' => '📱 SMM: цели и контент',
-            'callback_data' => 'smmPlan'
+            'callback_data' => 'smm_plan'
         ];
     }
 
