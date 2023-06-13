@@ -31,10 +31,10 @@ class CallbackHandler extends Controller
                 return (new CommandsController())->handler('howToStart', $callback->from_id);
             }
             // TODO: продумать создание ограничений
-            if (Redis::exists('task_' . $callback->data)) {
+            if (Redis::exists('task_' . $callback->data . '_' . $callback->from_id)) {
                 return (new ActionGPT())->taskHasProcessed($callback->from_id);
             }
-            Redis::setex('task_' . $callback->data, 3600, true);
+            Redis::setex('task_' . $callback->data . '_' . $callback->from_id, 3600, true);
             return (new TaskGPT($callback->from_id))->getTask($callback->data);
         }
     }
