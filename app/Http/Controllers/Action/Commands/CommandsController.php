@@ -127,7 +127,8 @@ class CommandsController
                 [$builder->getButton('analysis_market')],
                 [$builder->getButton('make_strategy')],
                 [$builder->getButton('take_risk')],
-                [$builder->getButton('talk_advice')]
+                [$builder->getButton('talk_advice')],
+                [$builder->getButton('smm_plan')]
             );
         return Sendler::send($query);
     }

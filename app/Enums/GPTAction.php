@@ -12,5 +12,6 @@ enum GPTAction: string
     case Strategy = 'make_strategy';
     case Risk = 'take_risk';
     case Advice = 'talk_advice';
+    case SmmPlan = 'smm_plan';
     case CommandsIdea = 'commands_idea';
 }

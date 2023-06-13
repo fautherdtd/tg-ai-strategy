@@ -14,6 +14,7 @@ class InlineKeyboardButtons
         'make_strategy' => 'makeStrategy',
         'take_risk' => 'takeRisk',
         'talk_advice' => 'talkAdvice',
+        'smm_plan' => 'smmPlan',
         'commands_idea' => 'commandsIdea',
         'delete_idea' => 'deleteIdea',
         'group_official' => 'groupOfficial'
@@ -99,6 +100,17 @@ class InlineKeyboardButtons
     /**
      * @return string[]
      */
+    public static function smmPlan(): array
+    {
+        return [
+            'text' => '📱 SMM: цели и контент',
+            'callback_data' => 'smmPlan'
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
     public static function commandsIdea(): array
     {
         return [
@@ -118,6 +130,9 @@ class InlineKeyboardButtons
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function groupOfficial(): array
     {
         return [

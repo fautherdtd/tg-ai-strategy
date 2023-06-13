@@ -22,7 +22,8 @@ class TaskGPT
         'analysis_market' => 'analysisMarket',
         'make_strategy' => 'makeStrategy',
         'take_risk' => 'takeRisk',
-        'talk_advice' => 'talkAdvice'
+        'talk_advice' => 'talkAdvice',
+        'smm_plan' => 'smmPlan',
     ];
     /**
      * @param int $chatID
@@ -110,6 +111,23 @@ class TaskGPT
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
+        );
+    }
+
+    /**
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function smmPlan(): mixed
+    {
+        $placeholder = BuilderTasks::make(
+            TaskClasses::SmmPlan->value,
+            $this->idea
+        );
+        $result = $this->sendlerGPT->make($placeholder);
+        $builder = new BuilderMessage($this->chatID);
+        return Sendler::send(
+            $builder->text($result)->buildText()
         );
     }
 

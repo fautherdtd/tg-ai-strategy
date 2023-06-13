@@ -6,7 +6,6 @@ use App\DTO\HookMessageDTO;
 use App\Enums\Commands;
 use App\Http\Controllers\Action\Commands\CommandsController;
 use App\Http\Controllers\Action\GPT\ActionGPT;
-use App\Http\Controllers\Action\SendlerChatGPT;
 use App\Services\Sendler;
 use Illuminate\Support\Facades\Redis;
 use App\Services\Telegram\BuilderMessage;
