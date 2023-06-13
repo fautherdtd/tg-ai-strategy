@@ -28,6 +28,7 @@ class TaskGPT
      */
     public function __construct(int $chatID)
     {
+        $this->sendlerGPT = new SendlerGPT();
         $this->chatID = $chatID;
         $this->idea = ContextGPT::where('chat_id', $this->chatID)->first();
     }
