@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-//    $builder = new BuilderTasks();
-//    return $builder->make();
-
-    return BuilderTasks::make(TaskClasses::TalkAdvice->value, 'text 123');
+    if (\Illuminate\Support\Facades\Redis::exists('posts.all')) {
+        echo 'есть';
+    } else {
+        \Illuminate\Support\Facades\Redis::setex('posts.all', 5, true);
+        echo 'нет';
+    }
 });
