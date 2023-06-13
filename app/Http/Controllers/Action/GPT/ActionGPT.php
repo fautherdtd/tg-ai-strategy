@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Action\GPT;
 
 use App\Models\ContextGPT;
-use App\Services\OpenAI\ChatGPT;
+use App\Services\OpenAI\SendlerGPT;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Redis;
 
 class ActionGPT
 {
-    public ChatGPT $gpt;
+    public SendlerGPT $gpt;
 
     /**
      * @param int $chatID

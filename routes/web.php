@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\GPTAction;
+use App\Enums\TaskGPT\TaskClasses;
+use App\Services\OpenAI\Tasks\BuilderTasks;
 use App\Services\Telegram\BuilderMessage;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    $builder = new BuilderTasks();
+//    return $builder->make();
+
+    return BuilderTasks::make(TaskClasses::TalkAdvice->value, 'text 123');
 });

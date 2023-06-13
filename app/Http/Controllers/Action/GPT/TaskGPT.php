@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Action\GPT;
 
-use App\Enums\GPTAction;
+use App\Enums\TaskGPT\TaskClasses;
 use App\Models\ContextGPT;
-use App\Services\OpenAI\ChatGPT;
+use App\Services\OpenAI\SendlerGPT;
+use App\Services\OpenAI\Tasks\BuilderTasks;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
 
 class TaskGPT
 {
+    /** @var int $chatID */
     public int $chatID;
+    /** @var string $idea */
+    public string $idea;
+    public SendlerGPT $sendlerGPT;
+
     public array $tasks = [
         'analysis_market' => 'analysisMarket',
         'make_strategy' => 'makeStrategy',
@@ -23,14 +29,17 @@ class TaskGPT
     public function __construct(int $chatID)
     {
         $this->chatID = $chatID;
+        $this->idea = ContextGPT::where('chat_id', $this->chatID)->first();
     }
 
     /**
      * @param string $task
      * @return false|mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTask(string $task): mixed
     {
+        $this->processAiForTask("https://tg-ai-strategy.shelit.agency/images/task/{$task}.jpg");
         return call_user_func('self::' . $this->tasks[$task]);
     }
 
@@ -40,23 +49,15 @@ class TaskGPT
      */
     protected function analysisMarket(): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
-        $placeholder = [
-            'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
-            'idea' => '"'. $idea->context . '"',
-            'tasks' => implode(' ', [
-                '1. Проанализируй мне полностью рынок.',
-                '2. Исследуй рынок и помоги сегментировать целевую аудиторию.',
-            ])
-        ];
-        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/analysis.jpg');
-        $gpt = new ChatGPT();
-        $result = $gpt->make(implode(' ', $placeholder));
+        $placeholder = BuilderTasks::make(
+            TaskClasses::AnalysisMarket->value,
+            $this->idea
+        );
+        $result = $this->sendlerGPT->make($placeholder);
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
         );
-
     }
 
     /**
@@ -65,24 +66,15 @@ class TaskGPT
      */
     protected function makeStrategy(): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
-        $placeholder = [
-            'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
-            'idea' => '"'. $idea->context . '"',
-            'tasks' => implode(' ', [
-                '1. Изучи топ 3 конкурентов в этой области.',
-                '2. Напиши мне подробнее развитие моего бизнеса от 0 до первой прибыли.',
-                '3. Опиши мне эту стратегию развития максимально эффективно и подробно.',
-            ])
-        ];
-        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/strategy.jpg');
-        $gpt = new ChatGPT();
-        $result = $gpt->make(implode(' ', $placeholder));
+        $placeholder = BuilderTasks::make(
+            TaskClasses::StrategyTask->value,
+            $this->idea
+        );
+        $result = $this->sendlerGPT->make($placeholder);
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
         );
-
     }
 
     /**
@@ -91,19 +83,11 @@ class TaskGPT
      */
     protected function takeRisk(): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
-        $placeholder = [
-            'role' => 'Ты - маркетолог. Твоя задача изучить мою идею, которая написана далее в кавычках',
-            'idea' => '"'. $idea->context . '"',
-            'tasks' => implode(' ', [
-                '1. Определи все риски.',
-                '2. Опиши с какими проблемами я могу столкнуться и как их избежать,
-                    используя знания всех юридических законов в том числе.',
-            ])
-        ];
-        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/risk.jpg');
-        $gpt = new ChatGPT();
-        $result = $gpt->make(implode(' ', $placeholder));
+        $placeholder = BuilderTasks::make(
+            TaskClasses::TakeRisk->value,
+            $this->idea
+        );
+        $result = $this->sendlerGPT->make($placeholder);
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
@@ -116,18 +100,11 @@ class TaskGPT
      */
     protected function talkAdvice(): mixed
     {
-        $idea = ContextGPT::where('chat_id', $this->chatID)->first();
-        $placeholder = [
-            'role' => 'Ты - маркетолог и специалист по найму. Твоя задача изучить мою идею, которая написана далее в кавычках',
-            'idea' => '"'. $idea->context . '"',
-            'tasks' => implode(' ', [
-                '1. Дай мне советы как маркетолог в этом бизнесе.',
-                '2. Я предприниматель и мне нужна команда. Скажи мне какую команду мне надо нанять для старта.',
-            ])
-        ];
-        $this->processAiForTask('https://tg-ai-strategy.shelit.agency/images/task/advice.jpg');
-        $gpt = new ChatGPT();
-        $result = $gpt->make(implode(' ', $placeholder));
+        $placeholder = BuilderTasks::make(
+            TaskClasses::TalkAdvice->value,
+            $this->idea
+        );
+        $result = $this->sendlerGPT->make($placeholder);
         $builder = new BuilderMessage($this->chatID);
         return Sendler::send(
           $builder->text($result)->buildText()
