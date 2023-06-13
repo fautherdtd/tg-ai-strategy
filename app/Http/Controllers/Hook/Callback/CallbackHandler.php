@@ -34,7 +34,7 @@ class CallbackHandler extends Controller
             if (Redis::exists('task_' . $callback->data)) {
                 (new ActionGPT())->taskHasProcessed($callback->from_id);
             }
-            Redis::set('task_' . $callback->data, true, 3600);
+            Redis::set('task_' . $callback->data, true);
             return (new TaskGPT($callback->from_id))->getTask($callback->data);
         }
     }
