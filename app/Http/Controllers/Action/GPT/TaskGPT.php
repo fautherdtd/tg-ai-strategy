@@ -8,6 +8,7 @@ use App\Services\OpenAI\SendlerGPT;
 use App\Services\OpenAI\Tasks\BuilderTasks;
 use App\Services\Sendler;
 use App\Services\Telegram\BuilderMessage;
+use Illuminate\Support\Facades\Redis;
 
 class TaskGPT
 {

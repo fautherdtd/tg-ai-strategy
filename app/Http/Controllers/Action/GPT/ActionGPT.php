@@ -12,6 +12,10 @@ class ActionGPT
 {
     public SendlerGPT $gpt;
 
+    public function __construct()
+    {
+        $this->gpt = new SendlerGPT();
+    }
     /**
      * @param int $chatID
      * @param string $message
@@ -53,6 +57,19 @@ class ActionGPT
                 [$builder->getButton('delete_idea')],
                 [$builder->getButton('commands_idea')],
             );
+        return Sendler::send($query);
+    }
+
+    /**
+     * @param int $chatID
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function taskHasProcessed(int $chatID)
+    {
+        $builder = new BuilderMessage($chatID);
+        $query = $builder->text(file_get_contents(resource_path('views/templates/task_has_processed.html')))
+            ->buildText();
         return Sendler::send($query);
     }
 }
